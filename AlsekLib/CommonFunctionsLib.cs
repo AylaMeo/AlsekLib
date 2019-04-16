@@ -205,6 +205,29 @@ namespace AlsekLib
         }
         #endregion
         
+        //Gets the vehicle infront of the player
+        #region GetVehicleInDir
+        public static int GetVehicleInDir(int OffSetY)
+        {   
+            Vector3 ForwardPosition = GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(PlayerId()), false), 0, OffSetY, 0);
+            int player = GetPlayerPed(PlayerId());
+            Vector3 playerCoords = GetEntityCoords(player, true);
+            int rayCastPoint = CastRayPointToPoint(playerCoords.X, playerCoords.Y, playerCoords.Z, ForwardPosition.X, ForwardPosition.Y, ForwardPosition.Z, 10, player, 0);
+            bool hit = false;
+            Vector3 endCoords = new Vector3(0,0,0);
+            Vector3 surfaceNormal = new Vector3(0,0,0);
+            int entity = 0;
+            GetRaycastResult(rayCastPoint, ref hit, ref endCoords, ref surfaceNormal, ref entity);
+            /*
+            if (CommonFunctionsLib.DebugMode)
+            {
+                AddBlipForCoord(ForwardPosition.X, ForwardPosition.Y, ForwardPosition.Z);
+            }*/
+
+            return entity;
+        }
+        #endregion
+        
         #endregion
     }
 }

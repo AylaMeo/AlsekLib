@@ -1,0 +1,210 @@
+using System;
+using System.Threading.Tasks;
+using CitizenFX.Core;
+using CitizenFX.Core.UI;
+using static CitizenFX.Core.Native.API;
+
+namespace AlsekLib
+{
+    public class CommonFunctionsLib : BaseScript
+    {
+        //Variables for this Library
+        #region Variables
+
+        public static bool DebugMode = false;
+
+        #endregion
+        
+        //Verifies a model and loads it
+        #region ModelLoader
+        public static async Task<bool> ModelLoader(uint ModelHash, string ModelName) //ModelHash is the hash of the model this is being requested to spawn. ModelName is the string name of the model, used only for debug msgs.
+        {
+            // Check if the model exists in the game.
+            if (IsModelInCdimage(ModelHash))
+            {
+                if (CommonFunctionsLib.DebugMode)
+                {
+                    Screen.ShowNotification($"~b~Debug~s~: Valid, loading model {ModelName}!");
+                }
+                // Load the model.
+                RequestModel(ModelHash);
+                // Wait until it's loaded.
+                while (!HasModelLoaded(ModelHash))
+                {
+                    await Delay(0);
+                }
+                // Model is loaded, return true.
+                return true;
+            }
+            // Model is not valid or is not loaded correctly.
+            else
+            {
+                if (CommonFunctionsLib.DebugMode)
+                {
+                    Screen.ShowNotification($"~b~Debug~s~: Model Invalid {ModelName}!");
+                }
+                // Return false.
+                return false;
+            }
+        }
+        #endregion
+        
+        //Takes a string (Example 313,543,42) and converts it to vector3
+        #region StringToVector3
+        public static Vector3 StringToVector3(string sVector)
+        {
+            // Remove the parentheses
+            if (sVector.StartsWith ("(") && sVector.EndsWith (")")) {
+                sVector = sVector.Substring(1, sVector.Length-2);
+            }
+ 
+            // split the items
+            string[] sArray = sVector.Split(',');
+ 
+            // store as a Vector3
+            Vector3 result = new Vector3(
+                float.Parse(sArray[0]),
+                float.Parse(sArray[1]),
+                float.Parse(sArray[2]));
+ 
+            return result;
+        }
+        #endregion
+
+        //This separates coordinates and heading from a single string (Example: 1132,523,42,180 (x,y,z,heading))
+        #region SeparateLocation
+        public static Tuple<Vector3, float> SeparateLocation(string sVector)
+        {
+            // Remove the parentheses
+            if (sVector.StartsWith ("(") && sVector.EndsWith (")")) {
+                //sVector = sVector.Substring(1, sVector.Length-2);
+            }
+ 
+            // split the items
+            string[] sArray = sVector.Split(',');
+ 
+            // store as a Vector3
+            Vector3 result = new Vector3(
+                float.Parse(sArray[0]),
+                float.Parse(sArray[1]),
+                float.Parse(sArray[2]));
+
+            float result2 = float.Parse(sArray[3]);
+            
+            return Tuple.Create(result,result2);
+        }
+        #endregion
+        
+        //Creates a random number (More often to be actually "random" then other methods)
+        #region RandomNumber
+        public static class IntUtil
+        {
+            private static Random random;
+
+            private static void Init()
+            {
+                if (random == null) random = new Random();
+            }
+
+            public static int Random(int min, int max)
+            {
+                Init();
+                return random.Next(min, max);
+            }
+        }
+        #endregion
+        
+        //Location tools
+        #region LocationTools
+        //Simply gets the distance between 2 entities
+        #region getDistanceBetweenEntities
+        public static float getDistanceBetweenEntities(int entity1, int entity2)
+        {
+            Vector3 entity1Coords = GetEntityCoords(entity1, true);
+            Vector3 entity2Coords = GetEntityCoords(entity2, true);
+            return GetDistanceBetweenCoords(entity1Coords.X, entity1Coords.Y, entity1Coords.Z, entity2Coords.X, entity2Coords.Y, entity2Coords.Z, true);
+        }
+        #endregion
+        
+
+        //Checks if the target vehicle is infront of the player if the player is moving
+        #region CheckMovingCoords
+        public static bool CheckMovingCoords(int TargetVehicle)
+        {
+            if (GetVehicleDashboardSpeed(GetVehiclePedIsIn(PlayerPedId(), false)) > 25)
+            {
+                var TargetCoords = GetEntityCoords(TargetVehicle, true);
+                
+                Vector3 playerPos = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0, 150, 0);
+                var vector_p5 = Vector3.Zero;
+                var vector_p6 = Vector3.Zero;
+                var int_p7 = 0;
+                var int_p8 = 0;
+                var float_p9 = 0f;
+                var returned_int = GetClosestRoad(playerPos.X, playerPos.Y, playerPos.Z, 1f, 1, ref vector_p5, ref vector_p6, ref int_p7, ref int_p8, ref float_p9, true);
+
+                var LocationVec = vector_p5;
+                
+                if (GetDistanceBetweenCoords(TargetCoords.X, TargetCoords.Y, TargetCoords.Z, LocationVec.X,
+                        LocationVec.Y, LocationVec.Z, true) < 100)
+                {
+                    return true;
+                }
+                else return false;
+
+            }
+            else return true;
+        }
+        #endregion
+
+        //Gets the nearest road either at the player, or Infront the player
+        #region GetNearestRoad
+        public static async Task<Vector3> GetNearestRoad(bool InfrontOfPlayer)
+        {
+            await Delay(0);
+            
+            Vector3 playerPos;
+            if (InfrontOfPlayer)
+            {
+                playerPos = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0, 200, 0);
+            }
+            else
+            {
+                playerPos = Game.PlayerPed.Position;
+            }
+            
+            var vector_p5 = Vector3.Zero;
+            var vector_p6 = Vector3.Zero;
+            var int_p7 = 0;
+            var int_p8 = 0;
+            var float_p9 = 0f;
+            var returned_int = GetClosestRoad(playerPos.X, playerPos.Y, playerPos.Z, 1f, 1, ref vector_p5, ref vector_p6, ref int_p7, ref int_p8, ref float_p9, true);
+
+            if (CommonFunctionsLib.DebugMode)
+            {
+                Debug.Write(
+                    $"playerPos: [{playerPos}] | vector_p5 [{vector_p5}] | vector_p6 [{vector_p6}] | int_p7 [{int_p7}] | int_p8 [{int_p8}] | float_p9 [{float_p9}] | returned_int [{returned_int}]");
+
+                var streetName = new uint();
+                var crossingRoad = new uint();
+                
+                GetStreetNameAtCoord(vector_p5.X, vector_p5.Y, vector_p5.Z, ref streetName, ref crossingRoad);
+                var stringStreetName = GetStreetNameFromHashKey(streetName);
+                var stringCrossingRoad = GetStreetNameFromHashKey(crossingRoad);
+                CitizenFX.Core.Debug.WriteLine(
+                    $"GetStreetNameAtCoord using [vector_p5] | streetName [{streetName}] [{stringStreetName}] | crossingRoad [{crossingRoad}] [{stringCrossingRoad}]");
+                
+                GetStreetNameAtCoord(vector_p6.X, vector_p6.Y, vector_p6.Z, ref streetName, ref crossingRoad);
+                stringStreetName = GetStreetNameFromHashKey(streetName);
+                stringCrossingRoad = GetStreetNameFromHashKey(crossingRoad);
+                CitizenFX.Core.Debug.WriteLine(
+                    $"GetStreetNameAtCoord using [vector_p6] | streetName [{streetName}] [{stringStreetName}] | crossingRoad [{crossingRoad}] [{stringCrossingRoad}]");
+            }
+
+            return vector_p5;
+        }
+        #endregion
+        
+        #endregion
+    }
+}

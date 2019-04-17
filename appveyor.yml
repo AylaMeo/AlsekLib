@@ -4,7 +4,7 @@ before_build:
 build:
   verbosity: minimal
 after_build:
-  - cmd: 7z a AlsekLib-%VERSION_NAME%.zip -r ..\build\*
+  - cmd: 7z a AlsekLib-%VERSION_NAME%.zip -r bin\debug\*
   - cmd: appveyor PushArtifact AlsekLib-%VERSION_NAME%.zip  
 on_success:
   - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1

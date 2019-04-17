@@ -11,7 +11,7 @@
     <copyright>Copyright 2019</copyright>
     <tags>fivem library</tags>
     <dependencies>
-      <dependency id="SampleDependency" version="1.0" />
+      <dependency id="CitizenFX.Core.Client" version="0.0.0.0" />
     </dependencies>
   </metadata>
 </package>

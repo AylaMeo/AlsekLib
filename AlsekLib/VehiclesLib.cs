@@ -69,8 +69,8 @@ namespace AlsekLib
                 // Loop through all available upgrades for this specific mod type.
                 for (var x = 0; x < mod.ModCount; x++)
                 {
-                    var randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,mod.ModCount);
-                    SetVehicleMod(vehicle.Handle, mod.ModCount, randomNumberMod, false);
+                    var randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,x);
+                    SetVehicleMod(vehicle.Handle, x, randomNumberMod, false);
                 }
             }
 

@@ -2,7 +2,6 @@
 <package >
   <metadata>
     <id>Package</id>
-    <version>$version$</version>
     <authors>Alsekwolf</authors>
     <owners>Alsekwolf</owners>
     <licenseUrl>https://github.com/Alsekwolf/AlsekLib/blob/master/LICENSE</licenseUrl>

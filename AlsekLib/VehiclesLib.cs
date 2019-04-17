@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.UI;
@@ -50,10 +51,31 @@ namespace AlsekLib
         #endregion
         
         //Applies random vehicle mods to the inserted vehicle TODO: Update this to include more mods
-        #region RandomVehicleMods
-        public static async Task RandomVehicleMods(int Vehicle)
+        #region randomVehicleMods
+        public static async Task randomVehicleMods(Vehicle vehicle)
         {
-            var randomNumberColor = CommonFunctionsLib.IntUtil.Random(0,159);
+            //sets the modkit to 0 so the vehicle can be modified
+            SetVehicleModKit(vehicle.Handle, 0);
+
+            // Get all mods available on this vehicle.
+            VehicleMod[] mods = vehicle.Mods.GetAllMods();
+
+            // Loop through all the mods.
+            foreach (var mod in mods)
+            {
+                // Get the current item index ({current}/{max upgrades})
+                var currentItem = $"[1/{ mod.ModCount + 1}]";
+                
+                // Loop through all available upgrades for this specific mod type.
+                for (var x = 0; x < mod.ModCount; x++)
+                {
+                    var randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,mod.ModCount);
+                    Debug.Write($"{mod.ModCount}");
+
+                }
+            }
+
+            /*var randomNumberColor = CommonFunctionsLib.IntUtil.Random(0,159);
             SetVehicleColours(Vehicle, randomNumberColor, randomNumberColor);
             
             await Delay(0);
@@ -99,7 +121,7 @@ namespace AlsekLib
             randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod48);
             SetVehicleMod(Vehicle, 48, randomNumberMod, false);
             randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,7);
-            SetVehicleWindowTint(Vehicle, randomNumberMod);
+            SetVehicleWindowTint(Vehicle, randomNumberMod);*/
         }
         #endregion
         

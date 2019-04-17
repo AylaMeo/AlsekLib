@@ -1,14 +1,12 @@
 version: 1.0.{build}
-nuget:
-  account_feed: true
-  project_feed: true
 before_build:
   - nuget restore
 build:
   verbosity: minimal
-  publish_nuget: true             # package projects with .nuspec files and push to artifacts
-  publish_nuget_symbols: true     # generate and publish NuGet symbol packages
-  include_nuget_references: true  # add -IncludeReferencedProjects option while packaging NuGet artifacts
+after_build:
+  - cmd: if %APPVEYOR_REPO_TAG%==true (appveyor SetVariable -Name VERSION_NAME -Value %APPVEYOR_REPO_TAG_NAME%) else (appveyor SetVariable -Name VERSION_NAME -Value beta)
+  - cmd: 7z a AlsekLib-%VERSION_NAME%.zip -r ..\build\*
+  - cmd: appveyor PushArtifact AlsekLib-%VERSION_NAME%.zip  
 on_success:
   - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
   - ps: ./send.ps1 success $env:WEBHOOK_URL

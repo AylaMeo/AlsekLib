@@ -47,34 +47,6 @@ namespace AlsekLib
                 return vehicle;
             }
         }
-        // kept for redundancy until I know it can be removed
-        public static async Task<int> spawnVehicleOld(string VehicleName, Vector3 SpawnCoords, float SpawnHeading)
-        {
-            await BaseScript.Delay(0);
-            var NameHash = (uint)GetHashKey(VehicleName);
-            uint VehicleHash = NameHash; 
-            {
-                bool successFull = await CommonFunctionsLib.ModelLoader(VehicleHash, VehicleName);
-                if (!successFull || !IsModelAVehicle(VehicleHash))
-                {
-                    // Vehicle model is invalid.
-                    if (CommonFunctionsLib.DebugMode)
-                    {
-                        Screen.ShowNotification($"~b~Debug~s~: Vehicle model is invalid. {VehicleName}!");
-                    }
-                    return 0;
-                }
-                else
-                {
-                    if (CommonFunctionsLib.DebugMode)
-                    {
-                        Screen.ShowNotification($"~b~Debug~s~: Valid, Vehicle will spawn {VehicleName}!");
-                    }
-                    var Vehicle = CreateVehicle(VehicleHash, SpawnCoords.X, SpawnCoords.Y, SpawnCoords.Z, SpawnHeading, true, false);
-                    return Vehicle;
-                }
-            }
-        }
         #endregion
         
         //Applies random vehicle mods to the inserted vehicle TODO: Update this to include more mods

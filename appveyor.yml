@@ -3,11 +3,12 @@ before_build:
   - nuget restore
 build:
   verbosity: minimal
+after_build:
+  - cmd: 7z a AlsekLib-%VERSION_NAME%.zip -r ..\build\*
+  - cmd: appveyor PushArtifact AlsekLib-%VERSION_NAME%.zip  
 on_success:
   - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
   - ps: ./send.ps1 success $env:WEBHOOK_URL
 on_failure:
   - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
   - ps: ./send.ps1 failure $env:WEBHOOK_URL
-after_build:
- - cmd: appveyor PushArtifact <your-nugetpackage.nupkg>

@@ -5,7 +5,7 @@ build:
   verbosity: minimal
 after_build:
   - cmd: if %APPVEYOR_REPO_TAG%==true (appveyor SetVariable -Name VERSION_NAME -Value %APPVEYOR_REPO_TAG_NAME%) else (appveyor SetVariable -Name VERSION_NAME -Value beta)
-  - cmd: 7z a AlsekLib-%VERSION_NAME%.zip -r .build\*.dll
+  - cmd: 7z a AlsekLib-%VERSION_NAME%.zip -r .build\*
   - cmd: appveyor PushArtifact AlsekLib-%VERSION_NAME%.zip  
 on_success:
   - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1

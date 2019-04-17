@@ -10,16 +10,15 @@ namespace AlsekLib
     {
         //spawnVehicle function, returns a cfx "vehicle". vehicleName = model name of vehicle (example:"adder") pos = vector3 coords for spawn, spawnHeading = float for vehicle heading when spawned.
         #region spawnVehicle
-        public static Tuple<Vehicle, int> spawnVehicle(string vehicleName, Vector3 pos, float spawnHeading)
+        public static async Task<Vehicle> spawnVehicle(string vehicleName, Vector3 pos, float spawnHeading)
         {
             //makes it return 0 if fails
             Vehicle vehicle = new Vehicle(0);
-            int vehicleInt = 0;
             //gets the name hash
             var nameHash = (uint)GetHashKey(vehicleName);
             uint vehicleHash = nameHash;
             //loads the vehicle model
-            bool successFull = CommonFunctionsLib.ModelLoader(vehicleHash, vehicleName);
+            bool successFull = await CommonFunctionsLib.ModelLoader(vehicleHash, vehicleName);
             if (!successFull || !IsModelAVehicle(vehicleHash))
             {
                 // Vehicle model is invalid.
@@ -28,7 +27,7 @@ namespace AlsekLib
                     Screen.ShowNotification($"~b~Debug~s~: Vehicle model is invalid. {vehicleName}!");
                 }
                 //returns the 0
-                return Tuple.Create(vehicle, vehicleInt);
+                return vehicle;
             }
             else
             {
@@ -37,7 +36,7 @@ namespace AlsekLib
                     Screen.ShowNotification($"~b~Debug~s~: Valid, Vehicle will spawn {vehicleName}!");
                 }
                 //actually creates the vehicle
-                vehicle = new Vehicle(vehicleInt = CreateVehicle(vehicleHash, pos.X, pos.Y, pos.Z + 1f, spawnHeading, true, false))
+                vehicle = new Vehicle(CreateVehicle(vehicleHash, pos.X, pos.Y, pos.Z + 1f, spawnHeading, true, false))
                 {
                     NeedsToBeHotwired = false,
                     PreviouslyOwnedByPlayer = true,
@@ -45,11 +44,7 @@ namespace AlsekLib
                     IsStolen = false,
                     IsWanted = false
                 };
-                if (CommonFunctionsLib.DebugMode)
-                {
-                    Debug.Write($"AlsekLib: Vehicle:{vehicle} VehicleInt:{vehicleInt}");
-                }
-                return Tuple.Create(vehicle, vehicleInt);
+                return vehicle;
             }
         }
         // kept for redundancy until I know it can be removed
@@ -59,7 +54,7 @@ namespace AlsekLib
             var NameHash = (uint)GetHashKey(VehicleName);
             uint VehicleHash = NameHash; 
             {
-                bool successFull = CommonFunctionsLib.ModelLoader(VehicleHash, VehicleName);
+                bool successFull = await CommonFunctionsLib.ModelLoader(VehicleHash, VehicleName);
                 if (!successFull || !IsModelAVehicle(VehicleHash))
                 {
                     // Vehicle model is invalid.

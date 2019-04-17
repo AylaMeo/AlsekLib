@@ -6,6 +6,12 @@ using static CitizenFX.Core.Native.API;
 
 namespace AlsekLib
 {
+    class Result
+    {
+        private Vehicle vehicle;
+        private int vehicleInt;
+    }
+    
     public class CommonFunctionsLib : BaseScript
     {
         //Variables for this Library

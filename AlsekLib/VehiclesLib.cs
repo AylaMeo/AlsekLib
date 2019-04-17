@@ -9,9 +9,52 @@ namespace AlsekLib
 {
     public class VehiclesLib : BaseScript
     {
-        #region SpawnVehicle
-        
-        public static async Task<int> SpawnVehicle(string VehicleName, Vector3 SpawnCoords, float SpawnHeading)
+        //spawnVehicle function, returns a cfx "vehicle". vehicleName = model name of vehicle (example:"adder") pos = vector3 coords for spawn, spawnHeading = float for vehicle heading when spawned.
+        #region spawnVehicle
+        public static async Task<(Vehicle, int)> spawnVehicle(string vehicleName, Vector3 pos, float spawnHeading)
+        {
+            //makes it return 0 if fails
+            Vehicle vehicle = new Vehicle(0);
+            int vehicleInt = 0;
+            //gets the name hash
+            var nameHash = (uint)GetHashKey(vehicleName);
+            uint vehicleHash = nameHash;
+            //loads the vehicle model
+            bool successFull = await CommonFunctionsLib.ModelLoader(vehicleHash, vehicleName);
+            if (!successFull || !IsModelAVehicle(vehicleHash))
+            {
+                // Vehicle model is invalid.
+                if (CommonFunctionsLib.DebugMode)
+                {
+                    Screen.ShowNotification($"~b~Debug~s~: Vehicle model is invalid. {vehicleName}!");
+                }
+                //returns the 0
+                return (vehicle, vehicleInt);
+            }
+            else
+            {
+                if (CommonFunctionsLib.DebugMode)
+                {
+                    Screen.ShowNotification($"~b~Debug~s~: Valid, Vehicle will spawn {vehicleName}!");
+                }
+                //actually creates the vehicle
+                vehicle = new Vehicle(vehicleInt = CreateVehicle(vehicleHash, pos.X, pos.Y, pos.Z + 1f, spawnHeading, true, false))
+                {
+                    NeedsToBeHotwired = false,
+                    PreviouslyOwnedByPlayer = true,
+                    IsPersistent = true,
+                    IsStolen = false,
+                    IsWanted = false
+                };
+                if (CommonFunctionsLib.DebugMode)
+                {
+                    Debug.Write($"AlsekLib: Vehicle:{vehicle} VehicleInt:{vehicleInt}");
+                }
+                return (vehicle, vehicleInt);
+            }
+        }
+        // kept for redundancy until I know it can be removed
+        public static async Task<int> spawnVehicleOld(string VehicleName, Vector3 SpawnCoords, float SpawnHeading)
         {
             var NameHash = (uint)GetHashKey(VehicleName);
             uint VehicleHash = NameHash; 

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Package</id>
+    <version>$version$</version>
+    <authors>Alsekwolf</authors>
+    <owners>Alsekwolf</owners>
+    <licenseUrl>https://github.com/Alsekwolf/AlsekLib/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Alsekwolf/AlsekLib</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A library of functions for FiveM</description>
+    <copyright>Copyright 2019</copyright>
+    <tags>fivem library</tags>
+    <dependencies>
+      <dependency id="SampleDependency" version="1.0" />
+    </dependencies>
+  </metadata>
+</package>

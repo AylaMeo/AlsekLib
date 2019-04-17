@@ -4,14 +4,13 @@ using CitizenFX.Core;
 using CitizenFX.Core.UI;
 using static CitizenFX.Core.Native.API;
 
-
 namespace AlsekLib
 {
     public class VehiclesLib : BaseScript
     {
         //spawnVehicle function, returns a cfx "vehicle". vehicleName = model name of vehicle (example:"adder") pos = vector3 coords for spawn, spawnHeading = float for vehicle heading when spawned.
         #region spawnVehicle
-        public static async Task<(Vehicle, int)> spawnVehicle(string vehicleName, Vector3 pos, float spawnHeading)
+        public static Tuple<Vehicle, int> spawnVehicle(string vehicleName, Vector3 pos, float spawnHeading)
         {
             //makes it return 0 if fails
             Vehicle vehicle = new Vehicle(0);
@@ -20,7 +19,7 @@ namespace AlsekLib
             var nameHash = (uint)GetHashKey(vehicleName);
             uint vehicleHash = nameHash;
             //loads the vehicle model
-            bool successFull = await CommonFunctionsLib.ModelLoader(vehicleHash, vehicleName);
+            bool successFull = CommonFunctionsLib.ModelLoader(vehicleHash, vehicleName);
             if (!successFull || !IsModelAVehicle(vehicleHash))
             {
                 // Vehicle model is invalid.
@@ -29,7 +28,7 @@ namespace AlsekLib
                     Screen.ShowNotification($"~b~Debug~s~: Vehicle model is invalid. {vehicleName}!");
                 }
                 //returns the 0
-                return (vehicle, vehicleInt);
+                return Tuple.Create(vehicle, vehicleInt);
             }
             else
             {
@@ -50,16 +49,17 @@ namespace AlsekLib
                 {
                     Debug.Write($"AlsekLib: Vehicle:{vehicle} VehicleInt:{vehicleInt}");
                 }
-                return (vehicle, vehicleInt);
+                return Tuple.Create(vehicle, vehicleInt);
             }
         }
         // kept for redundancy until I know it can be removed
         public static async Task<int> spawnVehicleOld(string VehicleName, Vector3 SpawnCoords, float SpawnHeading)
         {
+            await BaseScript.Delay(0);
             var NameHash = (uint)GetHashKey(VehicleName);
             uint VehicleHash = NameHash; 
             {
-                bool successFull = await CommonFunctionsLib.ModelLoader(VehicleHash, VehicleName);
+                bool successFull = CommonFunctionsLib.ModelLoader(VehicleHash, VehicleName);
                 if (!successFull || !IsModelAVehicle(VehicleHash))
                 {
                     // Vehicle model is invalid.

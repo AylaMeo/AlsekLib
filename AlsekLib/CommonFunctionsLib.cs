@@ -17,7 +17,7 @@ namespace AlsekLib
         
         //Verifies a model and loads it
         #region ModelLoader
-        public static async Task<bool> ModelLoader(uint ModelHash, string ModelName) //ModelHash is the hash of the model this is being requested to spawn. ModelName is the string name of the model, used only for debug msgs.
+        public static bool ModelLoader(uint ModelHash, string ModelName) //ModelHash is the hash of the model this is being requested to spawn. ModelName is the string name of the model, used only for debug msgs.
         {
             // Check if the model exists in the game.
             if (IsModelInCdimage(ModelHash))
@@ -31,7 +31,7 @@ namespace AlsekLib
                 // Wait until it's loaded.
                 while (!HasModelLoaded(ModelHash))
                 {
-                    await Delay(0);
+                    //await Delay(0);
                 }
                 // Model is loaded, return true.
                 return true;

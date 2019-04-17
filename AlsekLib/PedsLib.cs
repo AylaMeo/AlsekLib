@@ -10,8 +10,9 @@ namespace AlsekLib
         #region SpawnPed
         public static async Task<int> SpawnPed(string PedVariable, bool inVehicle, int Vehicle)
         {
+            await BaseScript.Delay(0);
             var PedHash = (uint)GetHashKey(PedVariable);
-            bool successFullPed = await CommonFunctionsLib.ModelLoader(PedHash, PedVariable);
+            bool successFullPed = CommonFunctionsLib.ModelLoader(PedHash, PedVariable);
             if (!successFullPed)
             {
                 // Ped model is invalid.

@@ -50,77 +50,48 @@ namespace AlsekLib
         }
         #endregion
         
-        //Applies random vehicle mods to the inserted vehicle TODO: Update this to include more mods
+        //Applies random vehicle mods to the inserted vehicle
         #region randomVehicleMods
-        public static async Task randomVehicleMods(Vehicle vehicle)
+        public static async Task randomVehicleMods(Vehicle vehicle, bool allowHorn)
         {
+            await Delay(0);
+            int randomNumberMod = 0;
+            
+            //applies random window tint (Disabled allowing the oldgen window tints (limo/green))
+            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,4);
+            SetVehicleWindowTint(vehicle.Handle, randomNumberMod);
             //sets the modkit to 0 so the vehicle can be modified
             SetVehicleModKit(vehicle.Handle, 0);
-
             // Get all mods available on this vehicle.
             VehicleMod[] mods = vehicle.Mods.GetAllMods();
-
             // Loop through all the mods.
             foreach (var mod in mods)
             {
                 // Get the current item index ({current}/{max upgrades})
                 var currentItem = $"[1/{ mod.ModCount + 1}]";
-                
                 // Loop through all available upgrades for this specific mod type.
                 for (var x = 0; x < mod.ModCount; x++)
                 {
-                    var randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,x);
-                    SetVehicleMod(vehicle.Handle, x, randomNumberMod, false);
+                    //if allowHorn = true, allows the horn to be changed, if allowHorn = false it stops the horn from being changed.
+                    if (allowHorn)
+                    {
+                        randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,x);
+                        SetVehicleMod(vehicle.Handle, x, randomNumberMod, false);
+                    }
+                    else
+                    {
+                        if (x == 14)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,x);
+                            SetVehicleMod(vehicle.Handle, x, randomNumberMod, false);
+                        }
+                    }   
                 }
             }
-
-            /*var randomNumberColor = CommonFunctionsLib.IntUtil.Random(0,159);
-            SetVehicleColours(Vehicle, randomNumberColor, randomNumberColor);
-            
-            await Delay(0);
-            SetVehicleModKit(Vehicle, 0);
-            var VehicleMod0 = GetNumVehicleMods(Vehicle, 0);
-            var VehicleMod1 = GetNumVehicleMods(Vehicle, 1);
-            var VehicleMod2 = GetNumVehicleMods(Vehicle, 2);
-            var VehicleMod3 = GetNumVehicleMods(Vehicle, 3);
-            var VehicleMod4 = GetNumVehicleMods(Vehicle, 4);
-            var VehicleMod5 = GetNumVehicleMods(Vehicle, 5);
-            var VehicleMod6 = GetNumVehicleMods(Vehicle, 6);
-            var VehicleMod7 = GetNumVehicleMods(Vehicle, 7);
-            var VehicleMod8 = GetNumVehicleMods(Vehicle, 8);
-            var VehicleMod9 = GetNumVehicleMods(Vehicle, 9);
-            var VehicleMod10 = GetNumVehicleMods(Vehicle, 10);
-            var VehicleMod46 = GetNumVehicleMods(Vehicle, 46);
-            var VehicleMod48 = GetNumVehicleMods(Vehicle, 48);
-            var randomNumberMod = 0;
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod0);
-            SetVehicleMod(Vehicle, 0, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod1);
-            SetVehicleMod(Vehicle, 1, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod2);
-            SetVehicleMod(Vehicle, 2, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod3);
-            SetVehicleMod(Vehicle, 3, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod4);
-            SetVehicleMod(Vehicle, 4, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod5);
-            SetVehicleMod(Vehicle, 5, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod6);
-            SetVehicleMod(Vehicle, 6, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod7);
-            SetVehicleMod(Vehicle, 7, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod8);
-            SetVehicleMod(Vehicle, 8, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod9);
-            SetVehicleMod(Vehicle, 9, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod10);
-            SetVehicleMod(Vehicle, 10, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod46);
-            SetVehicleMod(Vehicle, 46, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,VehicleMod48);
-            SetVehicleMod(Vehicle, 48, randomNumberMod, false);
-            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,7);
-            SetVehicleWindowTint(Vehicle, randomNumberMod);*/
         }
         #endregion
         

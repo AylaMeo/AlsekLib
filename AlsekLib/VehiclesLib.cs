@@ -57,6 +57,9 @@ namespace AlsekLib
             await Delay(0);
             int randomNumberMod = 0;
             
+            //applies random vehicle paint
+            randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,159);
+            SetVehicleColours(vehicle.Handle, randomNumberMod, randomNumberMod);
             //applies random window tint (Disabled allowing the oldgen window tints (limo/green))
             randomNumberMod = CommonFunctionsLib.IntUtil.Random(0,4);
             SetVehicleWindowTint(vehicle.Handle, randomNumberMod);

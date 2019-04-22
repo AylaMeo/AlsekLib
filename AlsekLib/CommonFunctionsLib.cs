@@ -20,7 +20,7 @@ namespace AlsekLib
         /// </summary>
         /// <param name="eventName"></param>
         /// <param name="args"></param>
-        public static void aTriggerServerEvent(string eventName, params object[] args)
+        public static void TriggerServerEvent(string eventName, params object[] args)
         {
             BaseScript.TriggerServerEvent(eventName, args);
         }
@@ -30,7 +30,7 @@ namespace AlsekLib
         /// </summary>
         /// <param name="eventName"></param>
         /// <param name="args"></param>
-        public static void aTriggerEvent(string eventName, params object[] args)
+        public static void TriggerEvent(string eventName, params object[] args)
         {
             BaseScript.TriggerEvent(eventName, args);
         }
@@ -40,7 +40,7 @@ namespace AlsekLib
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
-        public static async Task aDelay(int time)
+        public static async Task Delay(int time)
         {
             await BaseScript.Delay(time); 
         }
@@ -49,7 +49,7 @@ namespace AlsekLib
         /// Simple debug function
         /// </summary>
         /// <param name="msg"></param>
-        public static void aDebug(string msg)
+        public static void DebugW(string msg)
         {
             Debug.Write($"{GetCurrentResourceName()}:{msg}");
         }
@@ -76,7 +76,7 @@ namespace AlsekLib
                 // Wait until it's loaded.
                 while (!HasModelLoaded(ModelHash))
                 {
-                    await aDelay(0);
+                    await Delay(0);
                 }
                 // Model is loaded, return true.
                 return true;
@@ -228,7 +228,7 @@ namespace AlsekLib
         /// <returns></returns>
         public static async Task<Vector3> GetNearestRoad(bool InfrontOfPlayer)
         {
-            await aDelay(0);
+            await Delay(0);
             
             Vector3 playerPos;
             if (InfrontOfPlayer)

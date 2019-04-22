@@ -1,12 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.UI;
 using static CitizenFX.Core.Native.API;
 
 namespace AlsekLib
 {
-    public class CommonFunctionsLib : BaseScript
+    public class CommonFunctionsLib
     {
         //Variables for this Library
         #region Variables
@@ -15,23 +14,69 @@ namespace AlsekLib
 
         #endregion
         
-        //Verifies a model and loads it
+        #region Basescript
+        /// <summary>
+        /// Copy of <see cref="BaseScript.TriggerServerEvent(string, object[])"/>
+        /// </summary>
+        /// <param name="eventName"></param>
+        /// <param name="args"></param>
+        public static void aTriggerServerEvent(string eventName, params object[] args)
+        {
+            BaseScript.TriggerServerEvent(eventName, args);
+        }
+
+        /// <summary>
+        /// Copy of <see cref="BaseScript.TriggerEvent(string, object[])"/>
+        /// </summary>
+        /// <param name="eventName"></param>
+        /// <param name="args"></param>
+        public static void aTriggerEvent(string eventName, params object[] args)
+        {
+            BaseScript.TriggerEvent(eventName, args);
+        }
+
+        /// <summary>
+        /// Copy of <see cref="BaseScript.Delay(int)"/>
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static async Task aDelay(int time)
+        {
+            await BaseScript.Delay(time); 
+        }
+
+        /// <summary>
+        /// Simple debug function
+        /// </summary>
+        /// <param name="msg"></param>
+        public static void aDebug(string msg)
+        {
+            Debug.Write($"{GetCurrentResourceName()}:{msg}");
+        }
+        #endregion
+        
         #region ModelLoader
-        public static async Task<bool> ModelLoader(uint ModelHash, string ModelName) //ModelHash is the hash of the model this is being requested to spawn. ModelName is the string name of the model, used only for debug msgs.
+        /// <summary>
+        /// Verifies a model and loads it
+        /// </summary>
+        /// <param name="ModelHash"></param> ModelName is the string name of the model, used only for debug msgs.
+        /// <param name="ModelName"></param> ModelHash is the hash of the model this is being requested to spawn.
+        /// <returns></returns>
+        public static async Task<bool> ModelLoader(uint ModelHash, string ModelName)
         {
             // Check if the model exists in the game.
             if (IsModelInCdimage(ModelHash))
             {
                 if (CommonFunctionsLib.DebugMode)
                 {
-                    Screen.ShowNotification($"~b~Debug~s~: Valid, loading model {ModelName}!");
+                    Debug.Write($"AlsekLib: Valid, loading model {ModelName}!");
                 }
                 // Load the model.
                 RequestModel(ModelHash);
                 // Wait until it's loaded.
                 while (!HasModelLoaded(ModelHash))
                 {
-                    await Delay(0);
+                    await aDelay(0);
                 }
                 // Model is loaded, return true.
                 return true;
@@ -41,7 +86,7 @@ namespace AlsekLib
             {
                 if (CommonFunctionsLib.DebugMode)
                 {
-                    Screen.ShowNotification($"~b~Debug~s~: Model Invalid {ModelName}!");
+                    Debug.Write($"AlsekLib: Model Invalid {ModelName}!");
                 }
                 // Return false.
                 return false;
@@ -49,8 +94,12 @@ namespace AlsekLib
         }
         #endregion
         
-        //Takes a string (Example 313,543,42) and converts it to vector3
         #region StringToVector3
+        /// <summary>
+        /// Takes a string (Example 313,543,42) and converts it to vector3
+        /// </summary>
+        /// <param name="sVector"></param> 
+        /// <returns></returns>
         public static Vector3 StringToVector3(string sVector)
         {
             // Remove the parentheses
@@ -70,9 +119,13 @@ namespace AlsekLib
             return result;
         }
         #endregion
-
-        //This separates coordinates and heading from a single string (Example: 1132,523,42,180 (x,y,z,heading))
+        
         #region SeparateLocation
+        /// <summary>
+        /// This separates coordinates and heading from a single string (Example: 1132,523,42,180 (x,y,z,heading))
+        /// </summary>
+        /// <param name="sVector"></param>
+        /// <returns></returns>
         public static Tuple<Vector3, float> SeparateLocation(string sVector)
         {
             // Remove the parentheses
@@ -95,8 +148,10 @@ namespace AlsekLib
         }
         #endregion
         
-        //Creates a random number (More often to be actually "random" then other methods)
         #region RandomNumber
+        /// <summary>
+        /// Creates a random number (More often to be actually "random" then other methods)
+        /// </summary>
         public static class IntUtil
         {
             private static Random random;
@@ -114,10 +169,15 @@ namespace AlsekLib
         }
         #endregion
         
-        //Location tools
         #region LocationTools
-        //Simply gets the distance between 2 entities
+        
         #region getDistanceBetweenEntities
+        /// <summary>
+        /// Simply gets the distance between 2 entities
+        /// </summary>
+        /// <param name="entity1"></param>
+        /// <param name="entity2"></param>
+        /// <returns></returns>
         public static float getDistanceBetweenEntities(int entity1, int entity2)
         {
             Vector3 entity1Coords = GetEntityCoords(entity1, true);
@@ -126,9 +186,12 @@ namespace AlsekLib
         }
         #endregion
         
-
-        //Checks if the target vehicle is infront of the player if the player is moving
         #region CheckMovingCoords
+        /// <summary>
+        /// Checks if the target vehicle is infront of the player if the player is moving TODO: remove the speed requirement from this as it's contextual //TODO2: update anything that uses this to that
+        /// </summary>
+        /// <param name="TargetVehicle"></param>
+        /// <returns></returns>
         public static bool CheckMovingCoords(int TargetVehicle)
         {
             if (GetVehicleDashboardSpeed(GetVehiclePedIsIn(PlayerPedId(), false)) > 25)
@@ -156,12 +219,16 @@ namespace AlsekLib
             else return true;
         }
         #endregion
-
-        //Gets the nearest road either at the player, or Infront the player
+        
         #region GetNearestRoad
+        /// <summary>
+        /// Gets the nearest road either at the player, or Infront the player
+        /// </summary>
+        /// <param name="InfrontOfPlayer"></param> If true it gets 200m in front the player, if false gets nearest to player.
+        /// <returns></returns>
         public static async Task<Vector3> GetNearestRoad(bool InfrontOfPlayer)
         {
-            await Delay(0);
+            await aDelay(0);
             
             Vector3 playerPos;
             if (InfrontOfPlayer)
@@ -205,8 +272,12 @@ namespace AlsekLib
         }
         #endregion
         
-        //Gets the vehicle infront of the player
         #region GetVehicleInDir
+        /// <summary>
+        /// Gets the vehicle infront of the player
+        /// </summary>
+        /// <param name="OffSetY"></param> how far in front the player
+        /// <returns></returns>
         public static int GetVehicleInDir(int OffSetY)
         {   
             Vector3 ForwardPosition = GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(PlayerId()), false), 0, OffSetY, 0);
@@ -218,12 +289,6 @@ namespace AlsekLib
             Vector3 surfaceNormal = new Vector3(0,0,0);
             int entity = 0;
             GetRaycastResult(rayCastPoint, ref hit, ref endCoords, ref surfaceNormal, ref entity);
-            /*
-            if (CommonFunctionsLib.DebugMode)
-            {
-                AddBlipForCoord(ForwardPosition.X, ForwardPosition.Y, ForwardPosition.Z);
-            }*/
-
             return entity;
         }
         #endregion

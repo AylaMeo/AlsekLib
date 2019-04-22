@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core;
-using CitizenFX.Core.UI;
 
 namespace AlsekLib
 {
@@ -17,12 +16,16 @@ namespace AlsekLib
                 // Ped model is invalid.
                 if (CommonFunctionsLib.DebugMode)
                 {
-                    Screen.ShowNotification($"~b~Debug~s~: invalid, Peds not spawning {PedVariable}!");
+                    Debug.Write($"AlsekLib: Model invalid, Ped not spawning {PedVariable}!");
                 }
                 return 0;
             }
             else
             {
+                if (CommonFunctionsLib.DebugMode)
+                {
+                    Debug.Write($"AlsekLib: Model valid, Ped will spawn {PedVariable}!");
+                }
                 if (inVehicle && AreAnyVehicleSeatsFree(Vehicle))
                 {
                     var SeatFree = false;
@@ -57,7 +60,6 @@ namespace AlsekLib
                 {
                     //Make this area?
                     return 0;
-
                 }
             }
         }
@@ -69,7 +71,7 @@ namespace AlsekLib
         {
             if (CommonFunctionsLib.DebugMode)
             {
-                Screen.ShowNotification($"~b~Debug~s~: Ped:{PedNameString} Getting setup!");
+                Debug.Write($"AlsekLib: Applying settings to ped:{PedNameString}");
             }
             
             var WeaponHash = (uint)GetHashKey(PedWeapon);

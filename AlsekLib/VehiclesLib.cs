@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.UI;
 using static CitizenFX.Core.Native.API;
 
 namespace AlsekLib
 {
-    public class VehiclesLib : BaseScript
+    public class VehiclesLib
     {
         //spawnVehicle function, returns a cfx "vehicle". vehicleName = model name of vehicle (example:"adder") pos = vector3 coords for spawn, spawnHeading = float for vehicle heading when spawned.
         #region spawnVehicle
@@ -25,7 +22,7 @@ namespace AlsekLib
                 // Vehicle model is invalid.
                 if (CommonFunctionsLib.DebugMode)
                 {
-                    Screen.ShowNotification($"~b~Debug~s~: Vehicle model is invalid. {vehicleName}!");
+                    Debug.Write($"AlsekLib: Model invalid, Vehicle will not spawn. {vehicleName}!");
                 }
                 //returns the 0
                 return vehicle;
@@ -34,7 +31,7 @@ namespace AlsekLib
             {
                 if (CommonFunctionsLib.DebugMode)
                 {
-                    Screen.ShowNotification($"~b~Debug~s~: Valid, Vehicle will spawn {vehicleName}!");
+                    Debug.Write($"AlsekLib: Model valid, Vehicle will spawn {vehicleName}!");
                 }
                 //actually creates the vehicle
                 vehicle = new Vehicle(CreateVehicle(vehicleHash, pos.X, pos.Y, pos.Z + 1f, spawnHeading, true, false))
@@ -54,7 +51,7 @@ namespace AlsekLib
         #region randomVehicleMods
         public static async Task randomVehicleMods(Vehicle vehicle, bool allowHorn)
         {
-            await Delay(0);
+            await CommonFunctionsLib.aDelay(0);
             int randomNumberMod = 0;
             
             //applies random vehicle paint

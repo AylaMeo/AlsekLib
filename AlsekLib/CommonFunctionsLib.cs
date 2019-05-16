@@ -27,21 +27,21 @@ namespace AlsekLib
                 string prefix = $"[{GetCurrentResourceName()}] ";
                 if (level == LogLevel.info)
                 {
-                    prefix = $"^1[{GetCurrentResourceName()}] [INFO]^7 ";
+                    prefix = $"[{GetCurrentResourceName()}] [INFO] ";
                 }
                 else if (level == LogLevel.success)
                 {
-                    prefix = $"^2[{GetCurrentResourceName()}] [SUCCESS]^7 ";
+                    prefix = $"[{GetCurrentResourceName()}] [SUCCESS] ";
                 }
                 else if (level == LogLevel.warning)
                 {
-                    prefix = $"^3[{GetCurrentResourceName()}] [WARNING]^7 ";
+                    prefix = $"[{GetCurrentResourceName()}] [WARNING] ";
                 }
                 else if (level == LogLevel.error)
                 {
-                    prefix = $"^4[{GetCurrentResourceName()}] [ERROR]^7 ";
+                    prefix = $"[{GetCurrentResourceName()}] [ERROR] ";
                 }
-                Debug.WriteLine($"{prefix}[DEBUG LOG] {data.ToString()}");
+                Debug.WriteLine($"{prefix}[DEBUG LOG] [{data.ToString()}]");
                 //Debug.WriteLine($"{GetCurrentResourceName()}:{msg}");
             }
         }
@@ -82,7 +82,8 @@ namespace AlsekLib
             {
                 if (CommonFunctionsLib.DebugMode)
                 {
-                    Debug.Write($"AlsekLib: Valid, loading model {ModelName}!");
+                    //Debug.Write($"AlsekLib: Valid, loading model {ModelName}!");
+                    DebugLog.Log($"AlsekLib: Valid, loading model {ModelName}!", DebugLog.LogLevel.success);
                 }
                 // Load the model.
                 RequestModel(ModelHash);
@@ -99,7 +100,8 @@ namespace AlsekLib
             {
                 if (CommonFunctionsLib.DebugMode)
                 {
-                    Debug.Write($"AlsekLib: Model Invalid {ModelName}!");
+                    //Debug.Write($"AlsekLib: Model Invalid {ModelName}!");
+                    DebugLog.Log($"AlsekLib: Model Invalid {ModelName}!", DebugLog.LogLevel.error);
                 }
                 // Return false.
                 return false;

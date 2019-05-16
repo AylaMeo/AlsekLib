@@ -22,7 +22,8 @@ namespace AlsekLib
                 // Vehicle model is invalid.
                 if (CommonFunctionsLib.DebugMode)
                 {
-                    Debug.Write($"AlsekLib: Model invalid, Vehicle will not spawn. {vehicleName}!");
+                    //Debug.Write($"AlsekLib: Model invalid, Vehicle will not spawn. {vehicleName}!");
+                    DebugLog.Log($"AlsekLib: Model invalid, Vehicle will not spawn. {vehicleName}!", DebugLog.LogLevel.success);
                 }
                 //returns the 0
                 return vehicle;
@@ -31,7 +32,8 @@ namespace AlsekLib
             {
                 if (CommonFunctionsLib.DebugMode)
                 {
-                    Debug.Write($"AlsekLib: Model valid, Vehicle will spawn {vehicleName}!");
+                    //Debug.Write($"AlsekLib: Model valid, Vehicle will spawn {vehicleName}!");
+                    DebugLog.Log($"AlsekLib: Model valid, Vehicle will spawn {vehicleName}!", DebugLog.LogLevel.error);
                 }
                 //actually creates the vehicle
                 vehicle = new Vehicle(CreateVehicle(vehicleHash, pos.X, pos.Y, pos.Z + 1f, spawnHeading, true, false))

@@ -5,6 +5,48 @@ using static CitizenFX.Core.Native.API;
 
 namespace AlsekLib
 {
+    public static class DebugLog
+    {
+        public enum LogLevel
+        {
+            none = 0,
+            info = 1,
+            success = 2,
+            warning = 3,
+            error = 4
+        }
+
+        /// <summary>
+        /// Debug logging, only if debugmode is enabled OR it's a warning/error
+        /// </summary>
+        /// <param name="data"></param>
+        public static void Log(dynamic data, LogLevel level = LogLevel.none)
+        {
+            if (CommonFunctionsLib.DebugMode || level == LogLevel.error || level == LogLevel.warning)
+            {
+                string prefix = $"[{GetCurrentResourceName()}] ";
+                if (level == LogLevel.info)
+                {
+                    prefix = $"^1[{GetCurrentResourceName()}] [INFO]^7 ";
+                }
+                else if (level == LogLevel.success)
+                {
+                    prefix = $"^2[{GetCurrentResourceName()}] [SUCCESS]^7 ";
+                }
+                else if (level == LogLevel.warning)
+                {
+                    prefix = $"^3[{GetCurrentResourceName()}] [WARNING]^7 ";
+                }
+                else if (level == LogLevel.error)
+                {
+                    prefix = $"^4[{GetCurrentResourceName()}] [ERROR]^7 ";
+                }
+                Debug.WriteLine($"{prefix}[DEBUG LOG] {data.ToString()}");
+                //Debug.WriteLine($"{GetCurrentResourceName()}:{msg}");
+            }
+        }
+    }
+    
     public class CommonFunctionsLib
     {
         //Variables for this Library
@@ -16,26 +58,6 @@ namespace AlsekLib
         
         #region Basescript
         /// <summary>
-        /// Copy of <see cref="BaseScript.TriggerServerEvent(string, object[])"/>
-        /// </summary>
-        /// <param name="eventName"></param>
-        /// <param name="args"></param>
-        public static void TriggerServerEvent(string eventName, params object[] args)
-        {
-            BaseScript.TriggerServerEvent(eventName, args);
-        }
-
-        /// <summary>
-        /// Copy of <see cref="BaseScript.TriggerEvent(string, object[])"/>
-        /// </summary>
-        /// <param name="eventName"></param>
-        /// <param name="args"></param>
-        public static void TriggerEvent(string eventName, params object[] args)
-        {
-            BaseScript.TriggerEvent(eventName, args);
-        }
-
-        /// <summary>
         /// Copy of <see cref="BaseScript.Delay(int)"/>
         /// </summary>
         /// <param name="time"></param>
@@ -43,15 +65,6 @@ namespace AlsekLib
         public static async Task Delay(int time)
         {
             await BaseScript.Delay(time); 
-        }
-
-        /// <summary>
-        /// Simple debug function
-        /// </summary>
-        /// <param name="msg"></param>
-        public static void Log(string msg)
-        {
-            Debug.Write($"{GetCurrentResourceName()}:{msg}");
         }
         #endregion
         

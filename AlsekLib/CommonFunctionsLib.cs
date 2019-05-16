@@ -49,7 +49,7 @@ namespace AlsekLib
         /// Simple debug function
         /// </summary>
         /// <param name="msg"></param>
-        public static void DebugW(string msg)
+        public static void Log(string msg)
         {
             Debug.Write($"{GetCurrentResourceName()}:{msg}");
         }

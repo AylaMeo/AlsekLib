@@ -17,7 +17,7 @@ namespace AlsekLib
                 if (CommonFunctionsLib.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Model invalid, Ped not spawning {PedVariable}!");
-                    DebugLog.Log($"AlsekLib: Model invalid, Ped not spawning {PedVariable}!", DebugLog.LogLevel.error);
+                    DebugLog.Log($"AlsekLib: Model invalid, Ped not spawning {PedVariable}!",false, DebugLog.LogLevel.error);
                 }
                 return 0;
             }
@@ -26,7 +26,7 @@ namespace AlsekLib
                 if (CommonFunctionsLib.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Model valid, Ped will spawn {PedVariable}!");
-                    DebugLog.Log($"AlsekLib: Model valid, Ped will spawn {PedVariable}!", DebugLog.LogLevel.success);
+                    DebugLog.Log($"AlsekLib: Model valid, Ped will spawn {PedVariable}!",false, DebugLog.LogLevel.success);
                 }
                 if (inVehicle && AreAnyVehicleSeatsFree(Vehicle))
                 {
@@ -41,7 +41,7 @@ namespace AlsekLib
                             if (CommonFunctionsLib.DebugMode)
                             {
                                 //Debug.Write($"Seatfree:: {SeatFreeNum}");
-                                DebugLog.Log($"Seatfree:: {SeatFreeNum}", DebugLog.LogLevel.info);
+                                DebugLog.Log($"Seatfree:: {SeatFreeNum}",false, DebugLog.LogLevel.info);
                             }
                         }
                         else
@@ -75,7 +75,7 @@ namespace AlsekLib
             if (CommonFunctionsLib.DebugMode)
             {
                 //Debug.Write($"AlsekLib: Applying settings to ped:{PedNameString}");
-                DebugLog.Log($"AlsekLib: Applying settings to ped:{PedNameString}", DebugLog.LogLevel.info);
+                DebugLog.Log($"AlsekLib: Applying settings to ped:{PedNameString}",false, DebugLog.LogLevel.info);
             }
             
             var WeaponHash = (uint)GetHashKey(PedWeapon);

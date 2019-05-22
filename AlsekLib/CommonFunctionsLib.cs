@@ -91,7 +91,7 @@ namespace AlsekLib
                 if (CommonFunctionsLib.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Valid, loading model {ModelName}!");
-                    DebugLog.Log($"AlsekLib: Valid, loading model {ModelName}!", DebugLog.LogLevel.success);
+                    DebugLog.Log($"AlsekLib: Valid, loading model {ModelName}!", false, DebugLog.LogLevel.success);
                 }
                 // Load the model.
                 RequestModel(ModelHash);
@@ -109,7 +109,7 @@ namespace AlsekLib
                 if (CommonFunctionsLib.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Model Invalid {ModelName}!");
-                    DebugLog.Log($"AlsekLib: Model Invalid {ModelName}!", DebugLog.LogLevel.error);
+                    DebugLog.Log($"AlsekLib: Model Invalid {ModelName}!", false, DebugLog.LogLevel.error);
                 }
                 // Return false.
                 return false;

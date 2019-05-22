@@ -20,7 +20,7 @@ namespace AlsekLib
         /// Debug logging, only if debugmode is enabled OR it's a warning/error
         /// </summary>
         /// <param name="data"></param>
-        public static void Log(dynamic data, LogLevel level = LogLevel.none)
+        public static void Log(dynamic data, LogLevel level = LogLevel.none, bool newLine)
         {
             if (CommonFunctionsLib.DebugMode || level == LogLevel.error || level == LogLevel.warning)
             {
@@ -41,7 +41,15 @@ namespace AlsekLib
                 {
                     prefix = $"[{GetCurrentResourceName()}] [ERROR] ";
                 }
-                Debug.WriteLine($"\n{prefix}[DEBUG LOG] [{data.ToString()}]\n");
+
+                if (newLine)
+                {
+                    Debug.WriteLine($"\n{prefix}[DEBUG LOG] [{data.ToString()}]\n");
+                }
+                else
+                {
+                    Debug.WriteLine($"{prefix}[DEBUG LOG] [{data.ToString()}]");
+                }
                 //Debug.WriteLine($"{GetCurrentResourceName()}:{msg}");
             }
         }

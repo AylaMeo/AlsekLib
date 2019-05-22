@@ -20,7 +20,7 @@ namespace AlsekLib
         /// Debug logging, only if debugmode is enabled OR it's a warning/error
         /// </summary>
         /// <param name="data"></param>
-        public static void Log(dynamic data, LogLevel level = LogLevel.none, bool newLine)
+        public static void Log(dynamic data, bool newLine, LogLevel level = LogLevel.none)
         {
             if (CommonFunctionsLib.DebugMode || level == LogLevel.error || level == LogLevel.warning)
             {

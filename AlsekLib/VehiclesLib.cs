@@ -33,7 +33,7 @@ namespace AlsekLib
                 if (CommonFunctionsLib.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Model valid, Vehicle will spawn {vehicleName}!");
-                    DebugLog.Log($"AlsekLib: Model valid, Vehicle will spawn {vehicleName}!",DebugLog.LogLevel.success);
+                    DebugLog.Log($"AlsekLib: Model valid, Vehicle will spawn {vehicleName}!",false, DebugLog.LogLevel.success);
                 }
                 //actually creates the vehicle
                 vehicle = new Vehicle(CreateVehicle(vehicleHash, pos.X, pos.Y, pos.Z + 1f, spawnHeading, true, false))

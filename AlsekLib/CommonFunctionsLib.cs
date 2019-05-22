@@ -41,7 +41,7 @@ namespace AlsekLib
                 {
                     prefix = $"[{GetCurrentResourceName()}] [ERROR] ";
                 }
-                Debug.WriteLine($"{prefix}[DEBUG LOG] [{data.ToString()}]");
+                Debug.WriteLine($"\n{prefix}[DEBUG LOG] [{data.ToString()}]\n");
                 //Debug.WriteLine($"{GetCurrentResourceName()}:{msg}");
             }
         }

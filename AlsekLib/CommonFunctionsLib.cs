@@ -1,69 +1,13 @@
 using System;
 using System.Threading.Tasks;
+using AlsekLibShared;
 using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 
 namespace AlsekLib
 {
-    public static class DebugLog
-    {
-        public enum LogLevel
-        {
-            none = 0,
-            info = 1,
-            success = 2,
-            warning = 3,
-            error = 4
-        }
-
-        /// <summary>
-        /// Debug logging, only if debugmode is enabled OR it's a warning/error
-        /// </summary>
-        /// <param name="data"></param>
-        public static void Log(dynamic data, bool newLine, LogLevel level = LogLevel.none)
-        {
-            if (CommonFunctionsLib.DebugMode || level == LogLevel.error || level == LogLevel.warning)
-            {
-                string prefix = $"[{GetCurrentResourceName()}] ";
-                if (level == LogLevel.info)
-                {
-                    prefix = $"[{GetCurrentResourceName()}] [INFO] ";
-                }
-                else if (level == LogLevel.success)
-                {
-                    prefix = $"[{GetCurrentResourceName()}] [SUCCESS] ";
-                }
-                else if (level == LogLevel.warning)
-                {
-                    prefix = $"[{GetCurrentResourceName()}] [WARNING] ";
-                }
-                else if (level == LogLevel.error)
-                {
-                    prefix = $"[{GetCurrentResourceName()}] [ERROR] ";
-                }
-
-                if (newLine)
-                {
-                    Debug.WriteLine($"\n{prefix}[DEBUG LOG] [{data.ToString()}]\n");
-                }
-                else
-                {
-                    Debug.WriteLine($"{prefix}[DEBUG LOG] [{data.ToString()}]");
-                }
-                //Debug.WriteLine($"{GetCurrentResourceName()}:{msg}");
-            }
-        }
-    }
-    
     public class CommonFunctionsLib
     {
-        //Variables for this Library
-        #region Variables
-
-        public static bool DebugMode = false;
-
-        #endregion
-        
         #region Basescript
         /// <summary>
         /// Copy of <see cref="BaseScript.Delay(int)"/>
@@ -88,10 +32,10 @@ namespace AlsekLib
             // Check if the model exists in the game.
             if (IsModelInCdimage(ModelHash))
             {
-                if (CommonFunctionsLib.DebugMode)
+                if (DebugLog.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Valid, loading model {ModelName}!");
-                    DebugLog.Log($"AlsekLib: Valid, loading model {ModelName}!", false, DebugLog.LogLevel.success);
+                    DebugLog.Log($"AlsekLib: Valid, loading model {ModelName}!", false, false, DebugLog.LogLevel.success);
                 }
                 // Load the model.
                 RequestModel(ModelHash);
@@ -106,10 +50,10 @@ namespace AlsekLib
             // Model is not valid or is not loaded correctly.
             else
             {
-                if (CommonFunctionsLib.DebugMode)
+                if (DebugLog.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Model Invalid {ModelName}!");
-                    DebugLog.Log($"AlsekLib: Model Invalid {ModelName}!", false, DebugLog.LogLevel.error);
+                    DebugLog.Log($"AlsekLib: Model Invalid {ModelName}!", false, false, DebugLog.LogLevel.error);
                 }
                 // Return false.
                 return false;
@@ -270,7 +214,7 @@ namespace AlsekLib
             var float_p9 = 0f;
             var returned_int = GetClosestRoad(playerPos.X, playerPos.Y, playerPos.Z, 1f, 1, ref vector_p5, ref vector_p6, ref int_p7, ref int_p8, ref float_p9, true);
 
-            if (CommonFunctionsLib.DebugMode)
+            if (DebugLog.DebugMode)
             {
                 Debug.Write(
                     $"playerPos: [{playerPos}] | vector_p5 [{vector_p5}] | vector_p6 [{vector_p6}] | int_p7 [{int_p7}] | int_p8 [{int_p8}] | float_p9 [{float_p9}] | returned_int [{returned_int}]");

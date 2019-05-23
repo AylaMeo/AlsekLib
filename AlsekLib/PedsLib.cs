@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AlsekLibShared;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core;
 
@@ -14,19 +15,19 @@ namespace AlsekLib
             if (!successFullPed)
             {
                 // Ped model is invalid.
-                if (CommonFunctionsLib.DebugMode)
+                if (DebugLog.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Model invalid, Ped not spawning {PedVariable}!");
-                    DebugLog.Log($"AlsekLib: Model invalid, Ped not spawning {PedVariable}!",false, DebugLog.LogLevel.error);
+                    DebugLog.Log($"AlsekLib: Model invalid, Ped not spawning {PedVariable}!",false, false, DebugLog.LogLevel.error);
                 }
                 return 0;
             }
             else
             {
-                if (CommonFunctionsLib.DebugMode)
+                if (DebugLog.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Model valid, Ped will spawn {PedVariable}!");
-                    DebugLog.Log($"AlsekLib: Model valid, Ped will spawn {PedVariable}!",false, DebugLog.LogLevel.success);
+                    DebugLog.Log($"AlsekLib: Model valid, Ped will spawn {PedVariable}!",false, false, DebugLog.LogLevel.success);
                 }
                 if (inVehicle && AreAnyVehicleSeatsFree(Vehicle))
                 {
@@ -38,10 +39,10 @@ namespace AlsekLib
                         if (!IsVehicleSeatFree(Vehicle, SeatFreeNum))
                         {
                             ++SeatFreeNum;
-                            if (CommonFunctionsLib.DebugMode)
+                            if (DebugLog.DebugMode)
                             {
                                 //Debug.Write($"Seatfree:: {SeatFreeNum}");
-                                DebugLog.Log($"Seatfree:: {SeatFreeNum}",false, DebugLog.LogLevel.info);
+                                DebugLog.Log($"Seatfree:: {SeatFreeNum}",false, false, DebugLog.LogLevel.info);
                             }
                         }
                         else
@@ -72,10 +73,10 @@ namespace AlsekLib
 
         public static void PedSettings(int Ped, string PedWeapon, string PedNameString, uint Relations) //Ped is the the variable of the specific entity that this is being called on. PedWeapon is the weapon it is to get(example: WEAPON_SMG_MK2). PedNameString is the string name of the ped being spawned, used only for debug msgs.
         {
-            if (CommonFunctionsLib.DebugMode)
+            if (DebugLog.DebugMode)
             {
                 //Debug.Write($"AlsekLib: Applying settings to ped:{PedNameString}");
-                DebugLog.Log($"AlsekLib: Applying settings to ped:{PedNameString}",false, DebugLog.LogLevel.info);
+                DebugLog.Log($"AlsekLib: Applying settings to ped:{PedNameString}",false, false, DebugLog.LogLevel.info);
             }
             
             var WeaponHash = (uint)GetHashKey(PedWeapon);

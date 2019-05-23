@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AlsekLibShared;
 using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 
@@ -20,20 +21,20 @@ namespace AlsekLib
             if (!successFull || !IsModelAVehicle(vehicleHash))
             {
                 // Vehicle model is invalid.
-                if (CommonFunctionsLib.DebugMode)
+                if (DebugLog.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Model invalid, Vehicle will not spawn. {vehicleName}!");
-                    DebugLog.Log($"AlsekLib: Model invalid, Vehicle will not spawn. {vehicleName}!",false, DebugLog.LogLevel.error);
+                    DebugLog.Log($"AlsekLib: Model invalid, Vehicle will not spawn. {vehicleName}!",false, false, DebugLog.LogLevel.error);
                 }
                 //returns the 0
                 return vehicle;
             }
             else
             {
-                if (CommonFunctionsLib.DebugMode)
+                if (DebugLog.DebugMode)
                 {
                     //Debug.Write($"AlsekLib: Model valid, Vehicle will spawn {vehicleName}!");
-                    DebugLog.Log($"AlsekLib: Model valid, Vehicle will spawn {vehicleName}!",false, DebugLog.LogLevel.success);
+                    DebugLog.Log($"AlsekLib: Model valid, Vehicle will spawn {vehicleName}!",false, false, DebugLog.LogLevel.success);
                 }
                 //actually creates the vehicle
                 vehicle = new Vehicle(CreateVehicle(vehicleHash, pos.X, pos.Y, pos.Z + 1f, spawnHeading, true, false))

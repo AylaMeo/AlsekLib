@@ -71,32 +71,56 @@ namespace AlsekLib
 
         #region PedSettings
 
-        public static void PedSettings(int Ped, string PedWeapon, string PedNameString, uint Relations) //Ped is the the variable of the specific entity that this is being called on. PedWeapon is the weapon it is to get(example: WEAPON_SMG_MK2). PedNameString is the string name of the ped being spawned, used only for debug msgs.
+        public static void PedSettings(int Ped, string PedWeapon, string PedNameString, uint Relations, string PedType) //Ped is the the variable of the specific entity that this is being called on. PedWeapon is the weapon it is to get(example: WEAPON_SMG_MK2). PedNameString is the string name of the ped being spawned, used only for debug msgs.
         {
             if (DebugLog.DebugMode)
             {
                 //Debug.Write($"AlsekLib: Applying settings to ped:{PedNameString}");
                 DebugLog.Log($"AlsekLib: Applying settings to ped:{PedNameString}",false, false, DebugLog.LogLevel.info);
             }
-            
-            var WeaponHash = (uint)GetHashKey(PedWeapon);
-            SetPedShootRate(Ped, 700);
-            AddArmourToPed(Ped, GetPlayerMaxArmour(Ped) - GetPedArmour(Ped));
-            SetPedAlertness(Ped, 100);
-            SetPedAccuracy(Ped, 100);
-            SetPedCanSwitchWeapon(Ped, true);
-            SetEntityHealth(Ped, 200);
-            SetPedFleeAttributes(Ped, 2, true);
-            SetPedCombatAttributes(Ped, 46, true);
-            SetPedCombatAbility(Ped, 2);
-            SetPedCombatRange(Ped, 50);
-            SetPedPathAvoidFire(Ped, true);
-            SetPedPathCanUseLadders(Ped, true);
-            SetPedPathCanDropFromHeight(Ped, true);
-            SetPedPathPreferToAvoidWater(Ped, true);
-            SetPedGeneratesDeadBodyEvents(Ped, true);
-            GiveWeaponToPed(Ped, WeaponHash, 5000, true, true);
-            SetPedRelationshipGroupHash(Ped, Relations); // Hash is from https://gtaforums.com/topic/853451-request-hash-values-for-relationship-groups/ //
+
+            if (PedType.Contains("police") == true)
+            {
+                var WeaponHash = (uint)GetHashKey(PedWeapon);
+                SetPedShootRate(Ped, 300);
+                AddArmourToPed(Ped, GetPlayerMaxArmour(Ped) - GetPedArmour(Ped));
+                SetPedAlertness(Ped, 100);
+                SetPedAccuracy(Ped, 10);
+                SetPedCanSwitchWeapon(Ped, true);
+                SetEntityHealth(Ped, GetEntityMaxHealth(Ped));
+                SetPedFleeAttributes(Ped, 2, true);
+                SetPedCombatAttributes(Ped, 46, true);
+                SetPedCombatAbility(Ped, 2);
+                SetPedCombatRange(Ped, 100);
+                SetPedPathAvoidFire(Ped, true);
+                SetPedPathCanUseLadders(Ped, true);
+                SetPedPathCanDropFromHeight(Ped, true);
+                SetPedPathPreferToAvoidWater(Ped, true);
+                SetPedGeneratesDeadBodyEvents(Ped, true);
+                GiveWeaponToPed(Ped, WeaponHash, 5000, true, true);
+                SetPedRelationshipGroupHash(Ped, Relations); // Hash is from https://gtaforums.com/topic/853451-request-hash-values-for-relationship-groups/ //
+            }
+            else
+            {
+                var WeaponHash = (uint)GetHashKey(PedWeapon);
+                SetPedShootRate(Ped, 700);
+                AddArmourToPed(Ped, GetPlayerMaxArmour(Ped) - GetPedArmour(Ped));
+                SetPedAlertness(Ped, 100);
+                SetPedAccuracy(Ped, 100);
+                SetPedCanSwitchWeapon(Ped, true);
+                SetEntityHealth(Ped, 200);
+                SetPedFleeAttributes(Ped, 2, true);
+                SetPedCombatAttributes(Ped, 46, true);
+                SetPedCombatAbility(Ped, 2);
+                SetPedCombatRange(Ped, 50);
+                SetPedPathAvoidFire(Ped, true);
+                SetPedPathCanUseLadders(Ped, true);
+                SetPedPathCanDropFromHeight(Ped, true);
+                SetPedPathPreferToAvoidWater(Ped, true);
+                SetPedGeneratesDeadBodyEvents(Ped, true);
+                GiveWeaponToPed(Ped, WeaponHash, 5000, true, true);
+                SetPedRelationshipGroupHash(Ped, Relations); // Hash is from https://gtaforums.com/topic/853451-request-hash-values-for-relationship-groups/ //
+            }
         }
         #endregion
     }

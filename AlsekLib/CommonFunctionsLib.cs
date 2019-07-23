@@ -23,7 +23,7 @@ namespace AlsekLib
         }
     
         private List<Vehicle> vehiclesList = new List<Vehicle>();
-        public vectorData getVehicleList(bool police, bool movingCheck)
+        public async Task<vectorData> getVehicleList(bool police, bool movingCheck)
         {
             int index = 0;
             while (index == 0)
@@ -47,6 +47,7 @@ namespace AlsekLib
             
                 var random = new Random();
                 index = random.Next(vehiclesList.Count);
+                await Delay(1000);
             }
             /*if(vehiclesList.Count > 1)
                 vehiclesList.RemoveRange(1, vehiclesList.Count - 1);

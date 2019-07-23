@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AlsekLibShared;
 using CitizenFX.Core;
@@ -6,8 +8,128 @@ using static CitizenFX.Core.Native.API;
 
 namespace AlsekLib
 {
-    public class CommonFunctionsLib
+    public class CommonFunctionsLib : BaseScript
     {
+        private List<Vehicle> vehiclesList = new List<Vehicle>();
+        public Vector4 getVehicleList(bool police, bool movingCheck)
+        {
+            if (police)
+            {
+                vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, true) && CheckAllPlayers(e.Handle)).ToList();
+            }
+            if (police && movingCheck)
+            {
+                vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, true) && CheckAllPlayers(e.Handle) && CheckMovingCoords(e.Handle)).ToList();
+            }
+            if (movingCheck)
+            {
+                vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, false) && CheckAllPlayers(e.Handle) && CheckMovingCoords(e.Handle)).ToList();
+            }
+            else
+            {
+                vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, false) && CheckAllPlayers(e.Handle)).ToList();
+            }
+            
+            var random = new Random();
+            int index = random.Next(vehiclesList.Count);
+            /*if(vehiclesList.Count > 1)
+                vehiclesList.RemoveRange(1, vehiclesList.Count - 1);
+            */
+            float TargetHeading = new float();
+            Vector3 TargetCoords = new Vector3();
+
+            var TargetVehicle = vehiclesList[index].Handle;
+            SetEntityAsMissionEntity(TargetVehicle, true, true);
+            var MaxSeats = GetVehicleMaxNumberOfPassengers(TargetVehicle);
+            var ClearingSeats = -1;
+            do
+            {
+                var TargetPed = GetPedInVehicleSeat(TargetVehicle, ClearingSeats);
+                DeletePed(ref TargetPed);
+                ClearingSeats++;
+            } while (ClearingSeats < MaxSeats);
+                
+            TargetCoords = GetEntityCoords(TargetVehicle, true);
+            TargetHeading = GetEntityHeading(TargetVehicle);
+            DeleteVehicle(ref TargetVehicle);
+            var returnValue = new Vector4(TargetCoords, TargetHeading);
+            return returnValue;
+            
+            /*foreach (Vehicle v in vehiclesList)
+            {
+                var TargetVehicle = v.Handle;
+                SetEntityAsMissionEntity(TargetVehicle, true, true);
+                var MaxSeats = GetVehicleMaxNumberOfPassengers(TargetVehicle);
+                var ClearingSeats = -1;
+                do
+                {
+                    var TargetPed = GetPedInVehicleSeat(TargetVehicle, ClearingSeats);
+                    DeletePed(ref TargetPed);
+                    ClearingSeats++;
+                } while (ClearingSeats < MaxSeats);
+                
+                TargetCoords = GetEntityCoords(TargetVehicle, true);
+                TargetHeading = GetEntityHeading(TargetVehicle);
+                DeleteVehicle(ref TargetVehicle);
+                var returnValue = new Vector4(TargetCoords, TargetHeading);
+                return returnValue;
+            }
+            return new Vector4(new Vector3(0, 0,0), 0); */
+        }
+        
+        public bool CheckAllPlayers(int TargetVehicle)
+        {
+            foreach (Player p in Players)
+            {
+                if (NetworkIsPlayerActive(p.Handle))
+                {
+                    int playerPed = GetPlayerPed(p.Handle);
+                    var playerPedCoords = GetEntityCoords(playerPed, true);
+                    var LocationVec = GetEntityCoords(TargetVehicle, true);
+
+                    if (GetDistanceBetweenCoords(playerPedCoords.X, playerPedCoords.Y, playerPedCoords.Z,
+                            LocationVec.X, LocationVec.Y, LocationVec.Z, true) > 50 && !IsEntityOnScreen(TargetVehicle))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            return false;
+        }
+        
+        public static bool VehicleClassCheck(int Vehicle, bool police)
+        {
+            if (police)
+            {
+                var VehicleClass = GetVehicleClass(Vehicle);
+                if (VehicleClass != 13 & VehicleClass != 14 & VehicleClass != 15 & VehicleClass != 16 & VehicleClass != 21)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                var VehicleClass = GetVehicleClass(Vehicle);
+                if (VehicleClass == 1 || VehicleClass == 2 || VehicleClass == 3 || VehicleClass == 4 || VehicleClass == 5 ||
+                    VehicleClass == 6 || VehicleClass == 7)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        
         #region ModelLoader
         /// <summary>
         /// Verifies a model and loads it

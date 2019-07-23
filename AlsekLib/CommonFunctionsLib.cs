@@ -25,25 +25,29 @@ namespace AlsekLib
         private List<Vehicle> vehiclesList = new List<Vehicle>();
         public vectorData getVehicleList(bool police, bool movingCheck)
         {
-            if (police)
+            int index = 0;
+            while (index == 0)
             {
-                vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, true) && CheckAllPlayers(e.Handle)).ToList();
-            }
-            if (police && movingCheck)
-            {
-                vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, true) && CheckAllPlayers(e.Handle) && CheckMovingCoords(e.Handle)).ToList();
-            }
-            if (movingCheck)
-            {
-                vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, false) && CheckAllPlayers(e.Handle) && CheckMovingCoords(e.Handle)).ToList();
-            }
-            else
-            {
-                vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, false) && CheckAllPlayers(e.Handle)).ToList();
-            }
+                if (police)
+                {
+                    vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, true) && CheckAllPlayers(e.Handle)).ToList();
+                }
+                if (police && movingCheck)
+                {
+                    vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, true) && CheckAllPlayers(e.Handle) && CheckMovingCoords(e.Handle)).ToList();
+                }
+                if (movingCheck)
+                {
+                    vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, false) && CheckAllPlayers(e.Handle) && CheckMovingCoords(e.Handle)).ToList();
+                }
+                else
+                {
+                    vehiclesList = World.GetAllVehicles().Where(e => VehicleClassCheck(e.Handle, false) && CheckAllPlayers(e.Handle)).ToList();
+                }
             
-            var random = new Random();
-            int index = random.Next(vehiclesList.Count);
+                var random = new Random();
+                index = random.Next(vehiclesList.Count);
+            }
             /*if(vehiclesList.Count > 1)
                 vehiclesList.RemoveRange(1, vehiclesList.Count - 1);
             */

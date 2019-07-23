@@ -10,8 +10,20 @@ namespace AlsekLib
 {
     public class CommonFunctionsLib : BaseScript
     {
+        public struct vectorData
+        {
+            public vectorData(Vector3 vector3Coordinates, float floatHeading)
+            {
+                Coordinates = vector3Coordinates;
+                Heading = floatHeading;
+            }
+
+            public Vector3 Coordinates { get; private set; }
+            public float Heading { get; private set; }
+        }
+    
         private List<Vehicle> vehiclesList = new List<Vehicle>();
-        public Vector4 getVehicleList(bool police, bool movingCheck)
+        public vectorData getVehicleList(bool police, bool movingCheck)
         {
             if (police)
             {
@@ -52,7 +64,7 @@ namespace AlsekLib
             TargetCoords = GetEntityCoords(TargetVehicle, true);
             TargetHeading = GetEntityHeading(TargetVehicle);
             DeleteVehicle(ref TargetVehicle);
-            var returnValue = new Vector4(TargetCoords, TargetHeading);
+            var returnValue = new vectorData(TargetCoords, TargetHeading);
             return returnValue;
             
             /*foreach (Vehicle v in vehiclesList)

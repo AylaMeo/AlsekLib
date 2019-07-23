@@ -54,7 +54,7 @@ namespace AlsekLib
         #region randomVehicleMods
         public static async Task randomVehicleMods(Vehicle vehicle, bool allowHorn)
         {
-            await CommonFunctionsLib.Delay(0);
+            await BaseScript.Delay(0);
             int randomNumberMod = 0;
             
             //applies random vehicle paint

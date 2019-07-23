@@ -8,18 +8,6 @@ namespace AlsekLib
 {
     public class CommonFunctionsLib
     {
-        #region Basescript
-        /// <summary>
-        /// Copy of <see cref="BaseScript.Delay(int)"/>
-        /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
-        public static async Task Delay(int time)
-        {
-            await BaseScript.Delay(time); 
-        }
-        #endregion
-        
         #region ModelLoader
         /// <summary>
         /// Verifies a model and loads it
@@ -42,7 +30,7 @@ namespace AlsekLib
                 // Wait until it's loaded.
                 while (!HasModelLoaded(ModelHash))
                 {
-                    await Delay(0);
+                    await BaseScript.Delay(0);
                 }
                 // Model is loaded, return true.
                 return true;
@@ -195,7 +183,7 @@ namespace AlsekLib
         /// <returns></returns>
         public static async Task<Vector3> GetNearestRoad(bool InfrontOfPlayer)
         {
-            await Delay(0);
+            await BaseScript.Delay(0);
             
             Vector3 playerPos;
             if (InfrontOfPlayer)

@@ -146,6 +146,100 @@ namespace AlsekLib
                 }
             }
         }
+
+        #region MoveCamToNewSpot
+        /// <summary>
+        /// Moves camera to a new spot
+        /// </summary>
+        /// <param name="camera"></param>
+        /// <param name="newPos"></param>
+        /// <param name="newPointAt"></param>
+        /// <returns></returns>
+        private async Task<Camera> MoveCamToNewSpot(Camera camera, Vector3 newPos, Vector3 newPointAt)
+        {
+            var newCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true);
+            Camera newCamera = new Camera(newCam)
+            {
+                Position = newPos
+            };
+            newCamera.PointAt(newPointAt);
+            camera.InterpTo(newCamera, 800, 4000, 4000);
+            int timer = GetGameTimer();
+            while (camera.IsInterpolating || GetGameTimer() - timer < 900)
+            {
+                FreezeEntityPosition(Game.PlayerPed.Handle, true);
+                DisableMovementControlsThisFrame(true, true);
+                await Delay(0);
+            }
+            camera.Delete();
+            return newCamera;
+        }
+        #endregion
+
+        
+        #region Disable Movement Controls
+        /// <summary>
+        /// Disables all movement and camera related controls this frame.
+        /// </summary>
+        /// <param name="disableMovement"></param>
+        /// <param name="disableCameraMovement"></param>
+        public static void DisableMovementControlsThisFrame(bool disableMovement, bool disableCameraMovement)
+        {
+            if (disableMovement)
+            {
+                Game.DisableControlThisFrame(0, Control.MoveDown);
+                Game.DisableControlThisFrame(0, Control.MoveDownOnly);
+                Game.DisableControlThisFrame(0, Control.MoveLeft);
+                Game.DisableControlThisFrame(0, Control.MoveLeftOnly);
+                Game.DisableControlThisFrame(0, Control.MoveLeftRight);
+                Game.DisableControlThisFrame(0, Control.MoveRight);
+                Game.DisableControlThisFrame(0, Control.MoveRightOnly);
+                Game.DisableControlThisFrame(0, Control.MoveUp);
+                Game.DisableControlThisFrame(0, Control.MoveUpDown);
+                Game.DisableControlThisFrame(0, Control.MoveUpOnly);
+                Game.DisableControlThisFrame(0, Control.VehicleFlyMouseControlOverride);
+                Game.DisableControlThisFrame(0, Control.VehicleMouseControlOverride);
+                Game.DisableControlThisFrame(0, Control.VehicleMoveDown);
+                Game.DisableControlThisFrame(0, Control.VehicleMoveDownOnly);
+                Game.DisableControlThisFrame(0, Control.VehicleMoveLeft);
+                Game.DisableControlThisFrame(0, Control.VehicleMoveLeftRight);
+                Game.DisableControlThisFrame(0, Control.VehicleMoveRight);
+                Game.DisableControlThisFrame(0, Control.VehicleMoveRightOnly);
+                Game.DisableControlThisFrame(0, Control.VehicleMoveUp);
+                Game.DisableControlThisFrame(0, Control.VehicleMoveUpDown);
+                Game.DisableControlThisFrame(0, Control.VehicleSubMouseControlOverride);
+                Game.DisableControlThisFrame(0, Control.Duck);
+                Game.DisableControlThisFrame(0, Control.SelectWeapon);
+            }
+            if (disableCameraMovement)
+            {
+                Game.DisableControlThisFrame(0, Control.LookBehind);
+                Game.DisableControlThisFrame(0, Control.LookDown);
+                Game.DisableControlThisFrame(0, Control.LookDownOnly);
+                Game.DisableControlThisFrame(0, Control.LookLeft);
+                Game.DisableControlThisFrame(0, Control.LookLeftOnly);
+                Game.DisableControlThisFrame(0, Control.LookLeftRight);
+                Game.DisableControlThisFrame(0, Control.LookRight);
+                Game.DisableControlThisFrame(0, Control.LookRightOnly);
+                Game.DisableControlThisFrame(0, Control.LookUp);
+                Game.DisableControlThisFrame(0, Control.LookUpDown);
+                Game.DisableControlThisFrame(0, Control.LookUpOnly);
+                Game.DisableControlThisFrame(0, Control.ScaledLookDownOnly);
+                Game.DisableControlThisFrame(0, Control.ScaledLookLeftOnly);
+                Game.DisableControlThisFrame(0, Control.ScaledLookLeftRight);
+                Game.DisableControlThisFrame(0, Control.ScaledLookUpDown);
+                Game.DisableControlThisFrame(0, Control.ScaledLookUpOnly);
+                Game.DisableControlThisFrame(0, Control.VehicleDriveLook);
+                Game.DisableControlThisFrame(0, Control.VehicleDriveLook2);
+                Game.DisableControlThisFrame(0, Control.VehicleLookBehind);
+                Game.DisableControlThisFrame(0, Control.VehicleLookLeft);
+                Game.DisableControlThisFrame(0, Control.VehicleLookRight);
+                Game.DisableControlThisFrame(0, Control.NextCamera);
+                Game.DisableControlThisFrame(0, Control.VehicleFlyAttackCamera);
+                Game.DisableControlThisFrame(0, Control.VehicleCinCam);
+            }
+        }
+        #endregion
         
         #region ModelLoader
         /// <summary>

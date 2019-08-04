@@ -155,7 +155,7 @@ namespace AlsekLib
         /// <param name="newPos"></param>
         /// <param name="newPointAt"></param>
         /// <returns></returns>
-        private async Task<Camera> MoveCamToNewSpot(Camera camera, Vector3 newPos, Vector3 newPointAt)
+        public static async Task<Camera> MoveCamToNewSpot(Camera camera, Vector3 newPos, Vector3 newPointAt)
         {
             var newCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true);
             Camera newCamera = new Camera(newCam)

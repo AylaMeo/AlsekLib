@@ -46,6 +46,7 @@
       <Link>AlsekShared\DebugLog.cs</Link>
     </Compile>
     <Compile Include="CommonFunctionsLib.cs" />
+    <Compile Include="NotifyLib.cs" />
     <Compile Include="PedsLib.cs" />
     <Compile Include="VehiclesLib.cs" />
   </ItemGroup>

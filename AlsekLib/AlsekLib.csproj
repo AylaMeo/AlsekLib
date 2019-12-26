@@ -48,6 +48,7 @@
     <Compile Include="CommonFunctionsLib.cs" />
     <Compile Include="NotifyLib.cs" />
     <Compile Include="PedsLib.cs" />
+    <Compile Include="SubtitleLib.cs" />
     <Compile Include="VehiclesLib.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

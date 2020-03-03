@@ -8,8 +8,8 @@ trigger:
     include:
     - production
     - master
-    - feature-*
     exclude:
+    - feature-*
     - development
 
 pool:

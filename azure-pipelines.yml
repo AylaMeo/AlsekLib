@@ -18,12 +18,15 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  GitVersion.SemVer: ''
 
 steps:
 - task: NuGetToolInstaller@1
 - task: UseGitVersion@5
+  displayName: gitversion
   inputs:
     versionSpec: '5.x'
+    updateAssemblyInfo: true
 
 - task: NuGetCommand@2
   inputs:

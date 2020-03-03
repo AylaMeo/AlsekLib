@@ -21,12 +21,29 @@ variables:
   GitVersion.SemVer: ''
 
 steps:
+# ASP.NET Core (.NET Framework)
+- task: Assembly-Info-NetFramework@2
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    FileNames: |
+      **\AssemblyInfo.cs
+
+      **\AssemblyInfo.vb
+    InsertAttributes: true
+    FileEncoding: 'auto'
+    WriteBOM: false
+    Title: 'AlsekLib'
+    Description: 'A library of functions for FiveM'
+    Copyright: 'AylaMeo $(date:yyyy)'
+    LogLevel: 'verbose'
+    FailOnWarning: false
+    DisableTelemetry: false
+# NuGet
 - task: NuGetToolInstaller@1
+# GitVersion
 - task: UseGitVersion@5
-  displayName: gitversion
   inputs:
     versionSpec: '5.x'
-    updateAssemblyInfo: true
 
 - task: NuGetCommand@2
   inputs:

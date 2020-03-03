@@ -16,7 +16,6 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  GitVersion.SemVer: ''
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'

@@ -19,6 +19,16 @@ branches:
     tracks-release-branches: false
     is-release-branch: true
     pre-release-weight: 1000
+   production:
+    regex: ^production
+    mode: ContinuousDelivery
+    tag: 'production'
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: true
+    pre-release-weight: 1000
   feature:
     regex: ^features?[/-]
     mode: ContinuousDelivery

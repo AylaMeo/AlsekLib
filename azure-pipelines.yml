@@ -13,16 +13,18 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
+  GitVersion.SemVer: ''
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
 - task: NuGetToolInstaller@1
-- task: gittools.gitversion.gitversion-task.GitVersion@4
-  displayName: GitVersion 
-  inputs: 
-    preferBundledVersion: false
+- task: UseGitVersion@5
+  displayName: gitversion
+  inputs:
+    versionSpec: '5.x'
+    updateAssemblyInfo: true
 
 - task: NuGetCommand@2
   inputs:

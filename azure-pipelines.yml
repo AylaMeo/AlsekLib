@@ -19,6 +19,10 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
+- task: gittools.gitversion.gitversion-task.GitVersion@4
+  displayName: GitVersion 
+  inputs: 
+    preferBundledVersion: false
 
 - task: NuGetCommand@2
   inputs:

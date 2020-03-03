@@ -4,16 +4,18 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- feature/*
-- development
-- master
-- production
+  branches:
+    include:
+    - production
+    - master
+    exclude:
+    - feature-*
+    - development
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
-  GitVersion.SemVer: ''
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'

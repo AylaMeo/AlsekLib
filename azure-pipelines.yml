@@ -51,5 +51,5 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: '$(drop-GitVersion.SemVer)'
+    ArtifactName: 'drop-($GitVersion.SemVer)'
     publishLocation: 'Container'

@@ -25,9 +25,9 @@ steps:
 - task: NuGetToolInstaller@1
 # GitVersion
 - task: UseGitVersion@5
+  displayName: gitversion
   inputs:
-    versionSpec: '5.x'
-    updateAssemblyInfo: false
+    versionSpec: '5.1.2'
 
 - task: NuGetCommand@2
   inputs:
@@ -48,4 +48,8 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)/$(GitVersion.SemVer).zip'
     replaceExistingArchive: true
 
-    
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'

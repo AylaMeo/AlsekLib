@@ -49,11 +49,11 @@ branches:
     tracks-release-branches: false
     is-release-branch: true
     pre-release-weight: 1000
-  feature:
-    regex: ^features?[/-]
+  features:
+    regex: ^feature(s)?[/-]
     mode: ContinuousDelivery
     tag: useBranchName
-    increment: Inherit
+    increment: Minor
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
     tracks-release-branches: false

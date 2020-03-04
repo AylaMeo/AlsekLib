@@ -48,7 +48,7 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: true
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)/$(GitVersion.SemVer).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)/GitVersion.SemVer.zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1

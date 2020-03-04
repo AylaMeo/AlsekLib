@@ -42,7 +42,7 @@ branches:
    production:
     regex: ^production
     mode: ContinuousDelivery
-    tag: 'production'
+    tag: production
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false

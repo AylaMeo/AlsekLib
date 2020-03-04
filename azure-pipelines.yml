@@ -20,82 +20,46 @@ variables:
   buildConfiguration: 'Release'
   GitVersion.SemVer: ''
 
-steps:
-# NuGet
-- task: NuGetToolInstaller@1
-  displayName: Install nuget tool
-
-- task: NuGetCommand@2
-  displayName: Restore nuget packages
-  inputs:
-    restoreSolution: '$(solution)'
-
-# GitVersion
-- task: UseGitVersion@5
-  displayName: GitVersion
-  inputs:
-    versionSpec: '5.1.2'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(GitVersion.SemVer).zip'
-    replaceExistingArchive: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'Artifacts'
-    publishLocation: 'Container'
-
 jobs:
 - job: Main
   steps:
-    # NuGet
-    - task: NuGetToolInstaller@1
+  # NuGet
+  - task: NuGetToolInstaller@1
     displayName: Install nuget tool
-    
-    - task: NuGetCommand@2
+
+  - task: NuGetCommand@2
     displayName: Restore nuget packages
     inputs:
         restoreSolution: '$(solution)'
-    
+
     # GitVersion
-    - task: UseGitVersion@5
+  - task: UseGitVersion@5
     displayName: GitVersion
     inputs:
         versionSpec: '5.1.2'
-    
-    - task: VSBuild@1
+
+  - task: VSBuild@1
     inputs:
         solution: '$(solution)'
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
     
-    - task: ArchiveFiles@2
+  - task: ArchiveFiles@2
     inputs:
         rootFolderOrFile: '$(Build.BinariesDirectory)'
         includeRootFolder: true
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(GitVersion.SemVer).zip'
         replaceExistingArchive: true
-    
-    - task: PublishBuildArtifacts@1
+
+  - task: PublishBuildArtifacts@1
     inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'Artifacts'
         publishLocation: 'Container'
-    - job: A
+
+- job: Master
     dependsOn: Main
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     steps:
@@ -111,8 +75,8 @@ jobs:
         isDraft: true
         changeLogCompareToRelease: 'lastNonDraftRelease'
         changeLogType: 'commitBased'
-    
-- job: B
+
+- job: Release
   dependsOn: Main
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/release*'))
   steps:

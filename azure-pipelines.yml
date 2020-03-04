@@ -65,7 +65,7 @@ jobs:
       repositoryName: 'AylaMeo/AlsekLib'
       action: 'create'
       target: '$(Build.SourceVersion)'
-      title: '$(GitVersion.SemVer)'
+      title: 'v$(GitVersion.SemVer)'
       tagSource: 'userSpecifiedTag'
       tag: 'beta'
       isDraft: true
@@ -83,7 +83,7 @@ jobs:
       repositoryName: 'AylaMeo/AlsekLib'
       action: 'create'
       target: '$(Build.SourceVersion)'
-      title: '$(GitVersion.SemVer)'
+      title: 'v$(GitVersion.SemVer)'
       tagSource: 'userSpecifiedTag'
       tag: 'production'
       isDraft: true

@@ -25,6 +25,7 @@ steps:
 - task: NuGetToolInstaller@1
 # GitVersion
 - task: UseGitVersion@5
+  displayName: gitversion
   inputs:
     versionSpec: '5.1.3'
 
@@ -48,7 +49,6 @@ steps:
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
-  displayName: gitversion
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: '$(GitVersion.SemVer)'

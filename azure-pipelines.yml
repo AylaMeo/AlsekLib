@@ -32,7 +32,7 @@ steps:
 
 # GitVersion
 - task: UseGitVersion@5
-  displayName: gitversion
+  displayName: GitVersion
   inputs:
     versionSpec: '5.1.2'
 
@@ -48,7 +48,7 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: true
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)/GitVersion.SemVer.zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(GitVersion.SemVer).zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1

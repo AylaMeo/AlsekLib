@@ -51,17 +51,5 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: GitVersion.SemVer
+    ArtifactName: '$(drop-GitVersion.SemVer)'
     publishLocation: 'Container'
-
-
-- task: GitHubRelease@1
-  inputs:
-    gitHubConnection: 'github.com_AylaMeo'
-    repositoryName: 'AylaMeo/AlsekLib'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'gitTag'
-    title: '$(GitVersion.SemVer)'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'

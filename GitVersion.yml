@@ -1,9 +1,6 @@
-next-version: 1.0
-assembly-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-scheme: MajorMinorPatchTag
 assembly-informational-format: '{InformationalVersion}'
 mode: ContinuousDelivery
-increment: Inherit
 continuous-delivery-fallback-tag: ci
 tag-prefix: '[vV]'
 major-version-bump-message: '\+semver:\s?(breaking|major)'
@@ -42,7 +39,7 @@ branches:
    production:
     regex: ^production
     mode: ContinuousDelivery
-    tag: 'production'
+    tag: production
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false

@@ -82,7 +82,6 @@ jobs:
       repositoryName: 'AylaMeo/AlsekLib'
       action: 'create'
       target: '$(Build.SourceVersion)'
-      tagSource: 'gitTag'
       title: '$(GitVersion.SemVer)'
       isDraft: true
       changeLogCompareToRelease: 'lastNonDraftRelease'

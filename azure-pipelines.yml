@@ -65,8 +65,9 @@ jobs:
       repositoryName: 'AylaMeo/AlsekLib'
       action: 'create'
       target: '$(Build.SourceVersion)'
-      tagSource: 'gitTag'
       title: '$(GitVersion.SemVer)'
+      tagSource: 'gitTag'
+      tagPattern: '*'
       isDraft: true
       changeLogCompareToRelease: 'lastNonDraftRelease'
       changeLogType: 'commitBased'
@@ -83,6 +84,7 @@ jobs:
       action: 'create'
       target: '$(Build.SourceVersion)'
       title: '$(GitVersion.SemVer)'
+      tagSource: 'gitTag'
+      tagPattern: '*'
       isDraft: true
       changeLogCompareToRelease: 'lastNonDraftRelease'
-      changeLogType: 'commitBased'

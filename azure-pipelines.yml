@@ -51,8 +51,9 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: '$(GitVersion.SemVer)'
+    ArtifactName: GitVersion.SemVer
     publishLocation: 'Container'
+
 
 - task: GitHubRelease@1
   inputs:

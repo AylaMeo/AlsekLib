@@ -23,15 +23,18 @@ variables:
 steps:
 # NuGet
 - task: NuGetToolInstaller@1
+  displayName: Install nuget tool
+
+- task: NuGetCommand@2
+  displayName: Restore nuget packages
+  inputs:
+    restoreSolution: '$(solution)'
+
 # GitVersion
 - task: UseGitVersion@5
   displayName: gitversion
   inputs:
     versionSpec: '5.1.2'
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
 
 - task: VSBuild@1
   inputs:

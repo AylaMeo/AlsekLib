@@ -20,39 +20,70 @@ variables:
   buildConfiguration: 'Release'
   GitVersion.SemVer: ''
 
-steps:
-# NuGet
-- task: NuGetToolInstaller@1
-  displayName: Install nuget tool
+jobs:
+- job: Main
+  steps:
+  # NuGet
+  - task: NuGetToolInstaller@1
+    displayName: Install nuget tool
+  - task: NuGetCommand@2
+    displayName: Restore nuget packages
+    inputs:
+        restoreSolution: '$(solution)'
+  # GitVersion
+  - task: UseGitVersion@5
+    displayName: GitVersion
+    inputs:
+        versionSpec: '5.1.2'
+  - task: VSBuild@1
+    inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+  - task: ArchiveFiles@2
+    inputs:
+        rootFolderOrFile: '$(Build.BinariesDirectory)'
+        includeRootFolder: true
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(GitVersion.SemVer).zip'
+        replaceExistingArchive: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'Artifacts'
+        publishLocation: 'Container'
 
-- task: NuGetCommand@2
-  displayName: Restore nuget packages
-  inputs:
-    restoreSolution: '$(solution)'
+- job: Release
+  dependsOn: Main
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/release*'))
+  steps:
+  - script: echo this only runs for releases
+  - task: GitHubRelease@1
+    inputs:
+      gitHubConnection: 'github.com_AylaMeo'
+      repositoryName: 'AylaMeo/AlsekLib'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'gitTag'
+      title: '$(GitVersion.SemVer)'
+      isDraft: true
+      changeLogCompareToRelease: 'lastNonDraftRelease'
+      changeLogType: 'commitBased'
 
-# GitVersion
-- task: UseGitVersion@5
-  displayName: GitVersion
-  inputs:
-    versionSpec: '5.1.2'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(GitVersion.SemVer).zip'
-    replaceExistingArchive: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+- job: Master
+  dependsOn: Main
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+  steps:
+  - script: echo this only runs for master
+  - task: GitHubRelease@1
+    inputs:
+      gitHubConnection: 'github.com_AylaMeo'
+      repositoryName: 'AylaMeo/AlsekLib'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'gitTag'
+      title: '$(GitVersion.SemVer)'
+      isDraft: true
+      changeLogCompareToRelease: 'lastNonDraftRelease'
+      changeLogType: 'commitBased'

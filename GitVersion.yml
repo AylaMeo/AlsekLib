@@ -1,3 +1,4 @@
+next-version: 1.0.0-unstable
 assembly-file-versioning-scheme: MajorMinorPatchTag
 #assembly-informational-format: '{InformationalVersion}'
 mode: ContinuousDelivery

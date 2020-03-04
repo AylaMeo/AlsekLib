@@ -66,8 +66,7 @@ jobs:
       action: 'create'
       target: '$(Build.SourceVersion)'
       title: '$(GitVersion.SemVer)'
-      tagSource: 'gitTag'
-      tagPattern: '*'
+      tagSource: 'auto'
       isDraft: true
       changeLogCompareToRelease: 'lastNonDraftRelease'
       changeLogType: 'commitBased'
@@ -84,7 +83,6 @@ jobs:
       action: 'create'
       target: '$(Build.SourceVersion)'
       title: '$(GitVersion.SemVer)'
-      tagSource: 'gitTag'
-      tagPattern: '*'
+      tagSource: 'auto'
       isDraft: true
       changeLogCompareToRelease: 'lastNonDraftRelease'

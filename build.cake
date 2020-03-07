@@ -48,7 +48,7 @@ Task("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    NuGetRestore("./src/CakeTest.sln");
+    NuGetRestore("./src/AlsekLib.sln");
 });
 
 Task("Build")
@@ -59,13 +59,13 @@ Task("Build")
     if(IsRunningOnWindows())
     {
       // Use MSBuild
-      MSBuild("./src/CakeTest.sln", settings =>
+      MSBuild("./src/AlsekLib.sln", settings =>
         settings.SetConfiguration(configuration));
     }
     else
     {
       // Use XBuild
-      XBuild("./src/CakeTest.sln", settings =>
+      XBuild("./src/AlsekLib.sln", settings =>
         settings.SetConfiguration(configuration));
     }
 });

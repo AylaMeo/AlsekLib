@@ -38,7 +38,7 @@ jobs:
         rootFolderOrFile: '$(Build.BinariesDirectory)'
         includeRootFolder: true
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/build'
         replaceExistingArchive: true
   - task: PublishBuildArtifacts@1
     inputs:

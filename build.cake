@@ -1,5 +1,4 @@
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
-#tool "nuget:?package=GitVersion.CommandLine"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -34,16 +33,6 @@ Task("Clean")
 	CleanDirectory(buildDir2);
 }); 
 
-Task("Version")
-   .Does(() =>
-{
-    GitVersion(new GitVersionSettings {OutputType = GitVersionOutput.BuildServer});
-
-	var symVer = GitVersion();
-	Information($"SemVer: {symVer.SemVer}");
-	version = symVer.SemVer;
-});
-
 Task("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
@@ -53,7 +42,6 @@ Task("Restore-NuGet-Packages")
 
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
-	.IsDependentOn("Version")
     .Does(() =>
 {
     if(IsRunningOnWindows())

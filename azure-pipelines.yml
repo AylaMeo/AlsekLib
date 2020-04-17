@@ -34,11 +34,11 @@ jobs:
         configuration: '$(buildConfiguration)'
   - task: CopyFiles@2
     inputs:
-        contents: 'src/AlsekLib/bin/*'
+        contents: '$(Build.SourcesDirectory)/src/AlsekLib/bin/*'
         targetFolder: $(Build.ArtifactStagingDirectory)    
   - task: CopyFiles@2
     inputs:
-        contents: 'src/AlsekLibServer/bin/*'
+        contents: '$(Build.SourcesDirectory)/src/AlsekLibServer/bin/*'
         targetFolder: $(Build.ArtifactStagingDirectory)    
   - task: PublishBuildArtifacts@1
     inputs:

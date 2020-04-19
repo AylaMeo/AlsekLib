@@ -382,6 +382,11 @@ namespace AlsekLib
         /// <returns></returns>
         public static bool CheckMovingCoords(int TargetVehicle)
         {
+            if (GetVehiclePedIsIn(PlayerPedId(), false) == 0)
+            {
+                return true;
+            }
+            
             if (GetVehicleDashboardSpeed(GetVehiclePedIsIn(PlayerPedId(), false)) > 25)
             {
                 var TargetCoords = GetEntityCoords(TargetVehicle, true);

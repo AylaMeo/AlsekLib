@@ -4,7 +4,10 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- "*"
+  branches:
+    include:
+    - master
+    - '*'
 
 pool:
   vmImage: 'windows-latest'
@@ -14,9 +17,49 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: Cake@0
-  inputs:
-    script: 'build.cake'
-    target: 'Default'
-    verbosity: 'Verbose'
+jobs:
+- job: Main
+  steps:
+  # NuGet
+  - task: NuGetToolInstaller@1
+    displayName: Install nuget tool
+  - task: NuGetCommand@2
+    displayName: Restore nuget packages
+    inputs:
+        restoreSolution: '$(solution)'
+  - task: VSBuild@1
+    inputs:
+        solution: '$(solution)'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+  - task: CopyFiles@2
+    inputs:
+        contents: '$(Build.SourcesDirectory)/src/AlsekLib/bin/*'
+        targetFolder: $(Build.ArtifactStagingDirectory)    
+  - task: CopyFiles@2
+    inputs:
+        contents: '$(Build.SourcesDirectory)/src/AlsekLibServer/bin/*'
+        targetFolder: $(Build.ArtifactStagingDirectory)    
+  - task: PublishBuildArtifacts@1
+    inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'Artifacts'
+        publishLocation: 'Container'
+
+- job: Release
+  dependsOn: Main
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/release*'))
+  steps:
+  - script: echo this only runs for releases
+  - task: GitHubRelease@1
+    inputs:
+      gitHubConnection: 'github.com_AylaMeo'
+      repositoryName: 'AylaMeo/AlsekLib'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      title: 'v$(GitVersion.SemVer)'
+      tagSource: 'userSpecifiedTag'
+      tag: 'beta'
+      isDraft: true
+      changeLogCompareToRelease: 'lastNonDraftRelease'
+      changeLogType: 'commitBased'

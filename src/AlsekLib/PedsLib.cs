@@ -8,6 +8,13 @@ namespace AlsekLib
     public class PedsLib
     {
         #region SpawnPed
+        /// <summary>
+        /// Spawns a ped PedVariable is the model, bool inVehicle is if to spawn in vehicle and int Vehicle is for the vehicle to use, if so
+        /// </summary>
+        /// <param name="PedVariable"></param>
+        /// <param name="inVehicle"></param>
+        /// <param name="Vehicle"></param>
+        /// <returns></returns>
         public static async Task<int> SpawnPed(string PedVariable, bool inVehicle, int Vehicle)
         {
             var PedHash = (uint)GetHashKey(PedVariable);
@@ -70,7 +77,14 @@ namespace AlsekLib
         #endregion
 
         #region PedSettings
-
+        /// <summary>
+        /// set the settings of a ped, PedNameString is just the model of the ped (not really needed) and PedType is just if you want to make it a police ped by setting "police"
+        /// </summary>
+        /// <param name="Ped"></param>
+        /// <param name="PedWeapon"></param>
+        /// <param name="PedNameString"></param>
+        /// <param name="Relations"></param>
+        /// <param name="PedType"></param>
         public static void PedSettings(int Ped, string PedWeapon, string PedNameString, uint Relations, string PedType) //Ped is the the variable of the specific entity that this is being called on. PedWeapon is the weapon it is to get(example: WEAPON_SMG_MK2). PedNameString is the string name of the ped being spawned, used only for debug msgs.
         {
             if (DebugLog.DebugMode)

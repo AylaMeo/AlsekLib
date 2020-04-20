@@ -32,14 +32,13 @@ jobs:
         solution: '$(solution)'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
-  - task: CopyFiles@2
+  - task: ArchiveFiles@2
     inputs:
-        contents: '$(Build.SourcesDirectory)/src/AlsekLib/bin/*'
-        targetFolder: $(Build.ArtifactStagingDirectory)    
-  - task: CopyFiles@2
-    inputs:
-        contents: '$(Build.SourcesDirectory)/src/AlsekLibServer/bin/*'
-        targetFolder: $(Build.ArtifactStagingDirectory)    
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/.build/'
+        includeRootFolder: true
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/drop.zip'
+        replaceExistingArchive: true
   - task: PublishBuildArtifacts@1
     inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
@@ -57,7 +56,7 @@ jobs:
       repositoryName: 'AylaMeo/AlsekLib'
       action: 'create'
       target: '$(Build.SourceVersion)'
-      title: 'v$(GitVersion.SemVer)'
+      title: 'v$(Build.BuildNumber)'
       tagSource: 'userSpecifiedTag'
       tag: 'beta'
       isDraft: true

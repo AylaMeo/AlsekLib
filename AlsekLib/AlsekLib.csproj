@@ -4,47 +4,52 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A8FA024F-188B-41E8-8042-47BCD5691CE4}</ProjectGuid>
+    <ProjectGuid>{BDD63169-8F30-4A1D-B63B-B9A3E666CBD8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AlsekLibServer</RootNamespace>
-    <AssemblyName>AlsekLibServer</AssemblyName>
+    <RootNamespace>AlsekLib</RootNamespace>
+    <AssemblyName>AlsekLib</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\.build\</OutputPath>
+    <OutputPath>..\.build\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>embedded</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\.build\</OutputPath>
+    <OutputPath>..\.build\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\AlsekShared\DebugLog.cs">
-      <Link>AlsekShared\DebugLog.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="CitizenFX.Core.Server, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\CitizenFX.Core.Server.1.0.1259\lib\net45\CitizenFX.Core.Server.dll</HintPath>
+    <Reference Include="CitizenFX.Core.Client, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\CitizenFX.Core.Client.1.0.1180\lib\net45\CitizenFX.Core.Client.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AlsekShared\DebugLog.cs">
+      <Link>AlsekShared\DebugLog.cs</Link>
+    </Compile>
+    <Compile Include="CommonFunctionsLib.cs" />
+    <Compile Include="NotifyLib.cs" />
+    <Compile Include="PedsLib.cs" />
+    <Compile Include="SubtitleLib.cs" />
+    <Compile Include="VehiclesLib.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

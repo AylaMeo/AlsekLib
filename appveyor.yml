@@ -3,6 +3,9 @@ version: 1.0.{build}
 before_build:
   - nuget restore
 build:
+  parallel: true
+  project: AlsekLib.sln
+  include_nuget_references: true
   verbosity: minimal
 after_build:
   - cmd: if %APPVEYOR_REPO_TAG%==true (appveyor SetVariable -Name VERSION_NAME -Value %APPVEYOR_REPO_TAG_NAME%) else (appveyor SetVariable -Name VERSION_NAME -Value beta)

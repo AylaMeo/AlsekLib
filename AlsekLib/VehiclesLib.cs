@@ -7,9 +7,28 @@ namespace AlsekLib
 {
     public class VehiclesLib
     {
+        //GetVehicle function, gets vehicle ped is in
+        #region getVehicle
+        public static Vehicle GetVehicle(bool lastVehicle = false)
+        {
+            if (lastVehicle)
+            {
+                return Game.PlayerPed.LastVehicle;
+            }
+            else
+            {
+                if (Game.PlayerPed.IsInVehicle())
+                {
+                    return Game.PlayerPed.CurrentVehicle;
+                }
+            }
+            return null;
+        }
+        #endregion
+            
         //spawnVehicle function, returns a cfx "vehicle". vehicleName = model name of vehicle (example:"adder") pos = vector3 coords for spawn, spawnHeading = float for vehicle heading when spawned.
         #region spawnVehicle
-        public static async Task<Vehicle> spawnVehicle(string vehicleName, Vector3 pos, float spawnHeading)
+        public static async Task<Vehicle> SpawnVehicle(string vehicleName, Vector3 pos, float spawnHeading)
         {
             //makes it return 0 if fails
             Vehicle vehicle = new Vehicle(0);
@@ -52,7 +71,7 @@ namespace AlsekLib
         
         //Applies random vehicle mods to the inserted vehicle
         #region randomVehicleMods
-        public static async Task randomVehicleMods(Vehicle vehicle, bool allowHorn)
+        public static async Task RandomVehicleMods(Vehicle vehicle, bool allowHorn)
         {
             await BaseScript.Delay(0);
             int randomNumberMod = 0;

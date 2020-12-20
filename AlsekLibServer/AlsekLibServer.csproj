@@ -35,6 +35,7 @@
     <Compile Include="..\AlsekShared\DebugLog.cs">
       <Link>AlsekShared\DebugLog.cs</Link>
     </Compile>
+    <Compile Include="CommonFunctionsLib.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CitizenFX.Core.Server, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
